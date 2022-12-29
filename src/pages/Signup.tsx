@@ -1,18 +1,5 @@
-import { Button, Checkbox, Form, Input, Select, Typography } from 'antd';
-import React from 'react';
-
-const { Option } = Select;
-
-const formItemLayout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 6 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 16 },
-  },
-};
+import { Button, Checkbox, Form, Input, Typography } from 'antd';
+import { Link } from 'react-router-dom';
 
 const tailFormItemLayout = {
   wrapperCol: {
@@ -21,8 +8,8 @@ const tailFormItemLayout = {
       offset: 0,
     },
     sm: {
-      span: 16,
-      offset: 8,
+      span: 100,
+      offset: 0,
     },
   },
 };
@@ -36,29 +23,29 @@ const Signup = () => {
     };
 
   return (
-    <div className='bg-background h-screen relative'>
-      <div className='bg-white-default w-[40%] rounded-2xl flex flex-col absolute top-36 left-[45%]'>
+    <div className='bg-background bg-no-repeat bg-center bg-cover h-screen relative'>
+      <div className='bg-white-default w-[35%] rounded-2xl flex flex-col content-center items-center absolute top-[12%] left-[50%] shadow-inner shadow-white-gainsboro'>
         <Typography.Title
           editable={false}
           level={1}
-          style={{ margin: '10px 0 10px 0', textAlign: 'center' }}
+          style={{ margin: '50px 0 10px 0', textAlign: 'start' }}
+          className='font-Acme-Regular'
         >
           Sign Up
         </Typography.Title>
+        <p className='mb-2'>
+          Have an account? <Link to='/signin' className='text-blue-600 font-semibold'>Sign in</Link>
+        </p>
         <Form
-          {...formItemLayout}
           form={form}
-          name='register'
           onFinish={onFinish}
-          initialValues={{
-            residence: ['zhejiang', 'hangzhou', 'xihu'],
-            prefix: '86',
-          }}
           scrollToFirstError
+          layout='vertical'
+          className='w-[70%] label-form'
         >
           <Form.Item
             name='email'
-            label='E-mail'
+            label='Email Address'
             rules={[
               {
                 type: 'email',
@@ -67,36 +54,6 @@ const Signup = () => {
               {
                 required: true,
                 message: 'Please input your E-mail!',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            name='firstName'
-            label='First Name'
-            tooltip='What do you want others to call you?'
-            rules={[
-              {
-                required: true,
-                message: 'Please input your nickname!',
-                whitespace: true,
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            name='lastName'
-            label='Last Name'
-            tooltip='What do you want others to call you?'
-            rules={[
-              {
-                required: true,
-                message: 'Please input your nickname!',
-                whitespace: true,
               },
             ]}
           >
@@ -145,18 +102,6 @@ const Signup = () => {
           </Form.Item>
 
           <Form.Item
-            name='gender'
-            label='Gender'
-            rules={[{ required: true, message: 'Please select gender!' }]}
-          >
-            <Select placeholder='select your gender'>
-              <Option value='male'>Male</Option>
-              <Option value='female'>Female</Option>
-              <Option value='other'>Other</Option>
-            </Select>
-          </Form.Item>
-
-          <Form.Item
             name='agreement'
             valuePropName='checked'
             rules={[
@@ -170,12 +115,17 @@ const Signup = () => {
             {...tailFormItemLayout}
           >
             <Checkbox>
-              I have read the <a href=''>agreement</a>
+              I accept the <Link to='' className='text-blue-600 font-semibold'>Terms & Conditions</Link>
             </Checkbox>
           </Form.Item>
           <Form.Item {...tailFormItemLayout}>
-            <Button type='primary' htmlType='submit'>
-              Register
+            <Button
+              type='primary'
+              htmlType='submit'
+              disabled={false}  
+              className='h-10 w-full mb-5 bg-purple-FrenchMauve hover:bg-purple-Purpureus disabled:bg-white-F1cc  enabled:shadow-md enabled:shadow-purple-PinkLavender'
+            >
+              <span className='text-base'>Create Account</span>
             </Button>
           </Form.Item>
         </Form>

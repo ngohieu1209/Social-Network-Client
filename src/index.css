@@ -2,12 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Cabin */
 @import url('https://fonts.googleapis.com/css2?family=Cabin&family=Roboto+Condensed:wght@400;700&display=swap');
+/* ----- */
+
+/* Acme    */
+@import url('https://fonts.googleapis.com/css2?family=Acme&display=swap');
+/* ------- */
+
+* {
+  font-family: 'Cabin', sans-serif;
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
-  font-family: 'Cabin', sans-serif;
   font-weight: 400;
   line-height: 1.75;
   color: '#F1F1F1';
+}
+
+.label-form input {
+  font-family: 'Cabin', sans-serif;
 }

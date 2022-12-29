@@ -14,6 +14,7 @@ module.exports = {
           default: '#FFFFFF',
           F1: '#F1F1F1',
           F1cc: '#F1F1F1cc',
+          gainsboro: '#DBD9DB',
         },
         red: {
           neon: '#F90716',
@@ -32,6 +33,15 @@ module.exports = {
           dark: '#2C3333',
           darkHover: '#111313',
         },
+        purple: {
+          FrenchMauve: '#C47BCC',
+          Purpureus: '#A545B0',
+          PinkLavender: '#DEB6E2',
+        },
+      },
+      fontFamily: {
+        'Cabin-Regular': ['Cabin', 'sans-serif'],
+        'Acme-Regular': ['Acme', 'sans-serif'],
       },
     },
   },
