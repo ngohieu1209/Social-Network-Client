@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Signin } from '../../../models';
 
 interface AuthState {
   isLogged: boolean;
