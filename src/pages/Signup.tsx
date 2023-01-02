@@ -1,5 +1,10 @@
 import { Button, Checkbox, Form, Input, Typography } from 'antd';
+import { AxiosError } from 'axios';
 import { Link } from 'react-router-dom';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
+import authApi from '../api/authApi';
+import { Signup as SignupDto } from '../models';
+import { openNotification } from '../utils'
 
 const tailFormItemLayout = {
   wrapperCol: {
@@ -17,10 +22,22 @@ const tailFormItemLayout = {
 const Signup = () => {
 
   const [form] = Form.useForm();
-
-    const onFinish = (values: any) => {
-      console.log('Received values of form: ', values);
-    };
+  
+  const handleSubmit = async (values: SignupDto) => {
+    const { email, password } = values;
+    try {
+      await authApi.signUp({
+        email: email.toLowerCase().trim(),
+        password
+      })
+      openNotification('success', 'Sign Up Successfully', 'Please check your email to verify your account');
+      form.resetFields();
+    } catch (error) {
+      const err = error as AxiosError;
+      const data: any = err.response?.data;
+      openNotification('error', 'Sign Up Failed', data?.message);
+    }
+  }
 
   return (
     <div className='bg-background bg-no-repeat bg-center bg-cover h-screen relative'>
@@ -34,11 +51,14 @@ const Signup = () => {
           Sign Up
         </Typography.Title>
         <p className='mb-2'>
-          Have an account? <Link to='/signin' className='text-blue-600 font-semibold'>Sign in</Link>
+          Have an account?{' '}
+          <Link to='/signin' className='text-blue-600 font-semibold'>
+            Sign in
+          </Link>
         </p>
         <Form
           form={form}
-          onFinish={onFinish}
+          onFinish={handleSubmit}
           scrollToFirstError
           layout='vertical'
           className='w-[70%] label-form'
@@ -57,7 +77,7 @@ const Signup = () => {
               },
             ]}
           >
-            <Input />
+            <Input name='email' placeholder='Enter email address' />
           </Form.Item>
 
           <Form.Item
@@ -68,14 +88,25 @@ const Signup = () => {
                 required: true,
                 message: 'Please input your password!',
               },
+              {
+                min: 8,
+                pattern:
+                  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+                message: 'Invalid Password!',
+              },
             ]}
+            tooltip={{
+              title:
+                'Your password must be at least 8 characters including a lowercase letter, an uppercase letter, a number and a special character',
+              icon: <AiOutlineInfoCircle />,
+            }}
             hasFeedback
           >
-            <Input.Password />
+            <Input.Password name='password' placeholder='Password' />
           </Form.Item>
 
           <Form.Item
-            name='confirm'
+            name='confirmPassword'
             label='Confirm Password'
             dependencies={['password']}
             hasFeedback
@@ -98,11 +129,14 @@ const Signup = () => {
               }),
             ]}
           >
-            <Input.Password />
+            <Input.Password
+              name='confirmPassword'
+              placeholder='Confirm Password'
+            />
           </Form.Item>
 
           <Form.Item
-            name='agreement'
+            name='terms'
             valuePropName='checked'
             rules={[
               {
@@ -115,15 +149,20 @@ const Signup = () => {
             {...tailFormItemLayout}
           >
             <Checkbox>
-              I accept the <Link to='' className='text-blue-600 font-semibold'>Terms & Conditions</Link>
+              I accept the{' '}
+              <Link
+                to=''
+                className='text-blue-600 font-semibold'
+              >
+                Terms & Conditions
+              </Link>
             </Checkbox>
           </Form.Item>
           <Form.Item {...tailFormItemLayout}>
             <Button
               type='primary'
               htmlType='submit'
-              disabled={false}  
-              className='h-10 w-full mb-5 bg-purple-FrenchMauve hover:bg-purple-Purpureus disabled:bg-white-F1cc  enabled:shadow-md enabled:shadow-purple-PinkLavender'
+              className='h-10 w-full mb-5 bg-purple-FrenchMauve hover:bg-purple-Purpureus shadow-md shadow-purple-PinkLavender'
             >
               <span className='text-base'>Create Account</span>
             </Button>
