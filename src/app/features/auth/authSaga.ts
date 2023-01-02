@@ -4,14 +4,7 @@ import { authActions } from './authSlice';
 
 function* loginSaga(action: PayloadAction<string>): any {
   try {
-    const data = action.payload;
-    console.log(data);
-    if (data) {
-      yield put(authActions.loginSuccess(true));
-      window.location.href = '/';
-    } else {
-      yield put(authActions.loginFailed());
-    }
+    yield put(authActions.loginSuccess());
   } catch (error) {
     yield put(authActions.loginFailed());
   }

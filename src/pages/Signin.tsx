@@ -1,5 +1,11 @@
 import { Button, Form, Input, Typography } from 'antd';
+import { AxiosError } from 'axios';
 import { Link } from 'react-router-dom';
+import authApi from '../api/authApi';
+import { Signin as SigninDto } from '../models';
+import { openNotification } from '../utils';
+import { useAppDispatch } from '../app/hooks'
+import { authActions } from '../app/features/auth/authSlice';
 
 const tailFormItemLayout = {
   wrapperCol: {
@@ -15,10 +21,30 @@ const tailFormItemLayout = {
 };
 
 const Signin = () => {
+
+  const dispatch = useAppDispatch();
+
   const [form] = Form.useForm();
 
-  const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
+  const handleSubmit = async (values: SigninDto) => {
+    const { email, password } = values;
+    try {
+      await authApi.signIn({
+        email: email.toLowerCase().trim(),
+        password,
+      });
+      dispatch(authActions.loginStart());
+      openNotification(
+        'success',
+        'Sign In Successfully',
+        'You have successfully signed in'
+      );
+      form.resetFields();
+    } catch (error) {
+      const err = error as AxiosError;
+      const data: any = err.response?.data;
+      openNotification('error', 'Sign In Failed', data?.message);
+    }
   };
 
   return (
@@ -40,7 +66,7 @@ const Signin = () => {
         </p>
         <Form
           form={form}
-          onFinish={onFinish}
+          onFinish={handleSubmit}
           scrollToFirstError
           layout='vertical'
           className='w-[70%] label-form'
@@ -59,7 +85,7 @@ const Signin = () => {
               },
             ]}
           >
-            <Input />
+            <Input placeholder='Enter email address' />
           </Form.Item>
 
           <Form.Item
@@ -71,26 +97,21 @@ const Signin = () => {
                 message: 'Please input your password!',
               },
             ]}
-            hasFeedback
           >
-            <Input.Password />
+            <Input.Password placeholder='Password' />
           </Form.Item>
 
           <Form.Item {...tailFormItemLayout}>
             <Button
               type='primary'
               htmlType='submit'
-              disabled={false}
               className='h-10 mt-5 w-full bg-purple-FrenchMauve hover:bg-purple-Purpureus disabled:bg-white-F1cc  enabled:shadow-md enabled:shadow-purple-PinkLavender'
             >
               <span className='text-base'>Sign In</span>
             </Button>
           </Form.Item>
           <div className='mb-5'>
-            <Typography.Text
-              editable={false}
-              style={{ fontWeight: '600'}}
-              >
+            <Typography.Text editable={false} style={{ fontWeight: '600' }}>
               <Link to='/forgotPassword'>Forgot your password?</Link>
             </Typography.Text>
           </div>

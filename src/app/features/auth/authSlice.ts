@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 interface AuthState {
   isLogged: boolean;
@@ -18,12 +18,12 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    loginStart(state, action: PayloadAction<string>) {
+    loginStart(state) {
       state.loading = true;
     },
-    loginSuccess(state, action: PayloadAction<boolean>) {
+    loginSuccess(state) {
       state.loading = false;
-      state.isLogged = action.payload;
+      state.isLogged = true;
       state.success = true;
     },
     loginFailed(state) {
