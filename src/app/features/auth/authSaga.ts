@@ -5,6 +5,7 @@ import { authActions } from './authSlice';
 function* loginSaga(action: PayloadAction<string>): any {
   try {
     yield put(authActions.loginSuccess());
+    localStorage.setItem('firstLogin', "true");
   } catch (error) {
     yield put(authActions.loginFailed());
   }
