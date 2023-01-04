@@ -88,12 +88,12 @@ const Signup = () => {
                 required: true,
                 message: 'Please input your password!',
               },
-              {
-                min: 8,
-                pattern:
-                  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-                message: 'Invalid Password!',
-              },
+              // {
+              //   min: 8,
+              //   pattern:
+              //     /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+              //   message: 'Invalid Password!',
+              // },
             ]}
             tooltip={{
               title:

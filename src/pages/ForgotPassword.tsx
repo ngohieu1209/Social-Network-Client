@@ -77,7 +77,7 @@ const ForgotPassword = () => {
             <Button
               type='primary'
               htmlType='submit'
-              className='h-10 w-full bg-purple-FrenchMauve hover:bg-purple-Purpureus disabled:bg-white-F1cc  enabled:shadow-md enabled:shadow-purple-PinkLavender'
+              className='h-10 w-full bg-purple-FrenchMauve hover:bg-purple-Purpureus shadow-md shadow-purple-PinkLavender'
             >
               <span className='text-base'>Verify your email</span>
             </Button>
