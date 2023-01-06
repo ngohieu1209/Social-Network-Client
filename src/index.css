@@ -22,8 +22,26 @@ body {
   color: '#F1F1F1';
 }
 
+.ant-image-preview-img {
+  display: unset !important;
+}
+
 .label-form input {
   font-family: 'Cabin', sans-serif;
+}
+
+.share-input .ant-select-selector {
+  border-radius: 20px !important;
+  background-color: #F4F4F5 !important;
+}
+
+.share-input .ant-select-selector:hover {
+  background-color: #DFDFE2 !important;
+  border-color: #DFDFE2 !important;
+}
+
+.share-input .ant-select-selector:focus-within {
+  border-color: #DFDFE2 !important;
 }
 
 .instagram {
