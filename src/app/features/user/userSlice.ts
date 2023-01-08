@@ -3,19 +3,21 @@ import { UserInformation } from '../../../models';
 
 interface UserState {
   loading: boolean;
-  user: UserInformation;
+  data: UserInformation;
   success: boolean;
   error: boolean;
 }
 
 const initialState: UserState = {
   loading: false,
-  user: {
+  data: {
     id: '',
     email: '',
     firstName: '',
     lastName: '',
     avatar: '',
+    followers: 0,
+    following: 0,
   },
   success: false,
   error: false,
@@ -29,9 +31,9 @@ export const userSlice = createSlice({
       state.loading = true;
     },
 
-    getUserSuccess(state, action: PayloadAction<UserInformation>) {
+    getUserSuccess(state, action: PayloadAction<{data: UserInformation}>) {
       state.loading = false;
-      state.user = action.payload;
+      state.data = action.payload.data;
       state.success = true;
       state.error = false;
     },

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { authActions } from './app/features/auth/authSlice';
+import { userActions } from './app/features/user/userSlice';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { AppState } from './app/store';
 import { ActivationEmail, ForgotPassword, HomePage, ResetPassword, Signin, Signup, Error } from './pages';
@@ -14,8 +15,9 @@ function App() {
     const firstLogin = localStorage.getItem('firstLogin');
     if (firstLogin) {
       dispatch(authActions.loginSuccess());
+      dispatch(userActions.getUserStart());
     }
-  }, [isLogged, dispatch])
+  }, [])
 
   return (
     <Router>

@@ -9,10 +9,9 @@ axiosJWT.interceptors.request.use(
   async (config: AxiosRequestConfig) => {
     const isLogged = localStorage.getItem('firstLogin');
     if (isLogged) {
-      const res = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/v1/auth/refreshToken`, null);
-      console.log("res: ", res);
-      if (res.status === 200) {
-        config.headers!.Authorization = `Bearer ${res.data.accessToken}`;
+      const { data } = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/v1/auth/refreshToken`, null, { withCredentials: true });
+      if (data) {
+        config.headers!.Authorization = `Bearer ${data.accessToken}`;
       }
     }
     return config;
