@@ -4,12 +4,14 @@ import { authActions } from './app/features/auth/authSlice';
 import { userActions } from './app/features/user/userSlice';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { AppState } from './app/store';
-import { ActivationEmail, ForgotPassword, HomePage, ResetPassword, Signin, Signup, Error } from './pages';
+import { ProtectedRoute } from './components';
+import { ActivationEmail, ForgotPassword, HomePage, ResetPassword, Signin, Signup, Error, FirstLogin } from './pages';
 
 function App() {
 
   const dispatch = useAppDispatch();
   const isLogged = useAppSelector((state: AppState) => state.auth.isLogged);
+  const user = useAppSelector((state: AppState) => state.user.data);
 
   useEffect(() => {
     const firstLogin = localStorage.getItem('firstLogin');
@@ -22,19 +24,17 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route
-          path='/signin'
-          element={isLogged ? <Navigate to='/' /> : <Signin />}
-        />
-        <Route
-          path='/signup'
-          element={isLogged ? <Navigate to='/' /> : <Signup />}
-        />
-        <Route
-          path='/forgotPassword'
-          element={isLogged ? <Navigate to='/' /> : <ForgotPassword />}
-        />
+
+        <Route element={<ProtectedRoute isLogged={isLogged} />}>
+          <Route path='/' element={(user.firstName && user.lastName) ? <HomePage /> : <FirstLogin />} />
+        </Route>
+
+        <Route element={<ProtectedRoute isLogged={!isLogged} redirectPath='/'/>}>
+          <Route path='signin' element={<Signin />} />
+          <Route path='signup' element={<Signup />} />
+          <Route path='forgotPassword' element={<ForgotPassword />} />
+        </Route>
+
         <Route path='/user/resetPassword/:token' element={<ResetPassword />} />
         <Route
           path='/user/activate/:activateToken'

@@ -1,9 +1,6 @@
 import { Layout } from 'antd';
-import HeaderComponent from '../components/Header';
-import SiderLeft from '../components/SiderLeft';
-import SiderRight from '../components/SiderRight';
-import ContentComponent from '../components/Content';
-import FooterComponent from '../components/Footer';
+import { ContentComponent, FooterComponent, HeaderComponent, SiderLeft, SiderRight } from '../components';
+
 
 const HomePage = () => {
   return (
