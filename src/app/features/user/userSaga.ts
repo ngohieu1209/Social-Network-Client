@@ -1,26 +1,28 @@
-import { PayloadAction } from '@reduxjs/toolkit';
+import { UserInformation } from './../../../models/user';
 import { call, put, takeLatest } from 'redux-saga/effects';
-// import userApi from '../../../api/userApi';
+import userApi from '../../../api/userApi';
 import { userActions } from './userSlice';
 
-function* getCurrentUserSaga(action: PayloadAction<string>): any {
-  // try {
-  //   // // const { data } = yield call(userApi.getCurrentUser);
-  //   // if (data._id) {
-  //   //   const user = {
-  //   //     id: data._id,
-  //   //     email: data.email,
-  //   //     firstName: data.firstName,
-  //   //     lastName: data.lastName,
-  //   //     avatar: data.avatar,
-  //   //   };
-  //   //   yield put(userActions.getUserSuccess(user));
-  //   // } else {
-  //   //   yield put(userActions.getUserFailed());
-  //   }
-  // } catch (error) {
-  //   yield put(userActions.getUserFailed());
-  // }
+function* getCurrentUserSaga(): any {
+  try {
+    const userInformation: UserInformation = yield call(userApi.getCurrentUser);
+    if (userInformation) {
+      const data = {
+        id: userInformation.id,
+        email: userInformation.email,
+        firstName: userInformation.firstName,
+        lastName: userInformation.lastName,
+        avatar: userInformation.avatar,
+        followers: userInformation.followers,
+        following: userInformation.following,
+      };
+      yield put(userActions.getUserSuccess({ data }));
+    } else {
+      yield put(userActions.getUserFailed());
+    }
+  } catch (error) {
+    yield put(userActions.getUserFailed());
+  }
 }
 
 export default function* userSaga() {
