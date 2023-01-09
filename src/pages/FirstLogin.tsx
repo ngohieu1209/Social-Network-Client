@@ -1,14 +1,20 @@
-import React from 'react';
-import { Button, Form, Input, Typography, Layout, Avatar } from 'antd';
+import React, { useState } from 'react';
+import { Button, Form, Input, Typography, Layout, Avatar, Progress } from 'antd';
 import { AxiosError } from 'axios';
 import { Link } from 'react-router-dom';
-import authApi from '../api/authApi';
-import { Signin as SigninDto } from '../models';
 import { openNotification } from '../utils';
 import { useAppDispatch } from '../app/hooks';
-import { authActions } from '../app/features/auth/authSlice';
-import { AiOutlineUser } from 'react-icons/ai';
+import { AiOutlineUser, AiOutlinePoweroff } from 'react-icons/ai';
 import { MdPhotoCamera } from 'react-icons/md';
+import { FirstLogin as FirstLoginDto } from '../models';
+import userApi from '../api/userApi';
+import { userActions } from '../app/features/user/userSlice';
+import uploadApi from '../api/uploadApi';
+
+const { Header, Content, Footer } = Layout;
+const logo = require('../assets/logo.png');
+
+const INIT_PERSON = 30;
 
 const tailFormItemLayout = {
   wrapperCol: {
@@ -23,36 +29,70 @@ const tailFormItemLayout = {
   },
 };
 
-const { Header, Content, Footer } = Layout;
-const logo = require('../assets/logo.png')
 
 const FirstLogin = () => {
+
+  const [avatar, setAvatar] = useState<null | string>(null);
+  const [loading, setLoading] = useState(false);
+  const [percent, setPercent] = useState<number>(-INIT_PERSON);
 
   const dispatch = useAppDispatch();
 
   const [form] = Form.useForm();
 
-  const handleSubmit = async (values: SigninDto) => {
-    // const { email, password } = values;
-    // try {
-    //   await authApi.signIn({
-    //     email: email.toLowerCase().trim(),
-    //     password,
-    //   });
-    //   dispatch(authActions.loginStart());
-    //   openNotification(
-    //     'success',
-    //     'Sign In Successfully',
-    //     'You have successfully signed in'
-    //   );
-    //   form.resetFields();
-    // } catch (error) {
-    //   const err = error as AxiosError;
-    //   const data: any = err.response?.data;
-    //   openNotification('error', 'Sign In Failed', data?.message);
-    // }
-  };
+    const changeAvatar = async (e: React.ChangeEvent<HTMLInputElement>) => {
+      try {
+        const file = e.target.files;
+        if (file && file.length > 0) {
+          const image = file[0];
+          if (image.size > 2 * 1024 * 1024)
+            return openNotification('error', 'Upload Image Failed', "Size too large");
+          if (!image.type.match(/\/(jpg|jpeg|png|gif)$/))
+            return openNotification('error', 'Upload Image Failed', 'File format is incorrect');
+          let formData = new FormData();
+          formData.append('image', image);
+          setLoading(true);
+          const timerProgress = setInterval(() => {
+            setPercent((prev) => {
+              if (prev >= 60) {
+                clearInterval(timerProgress);
+              }
+              return prev + INIT_PERSON;
+            });
+          }, 1000);
+          const data = await uploadApi.uploadImage(formData);
+          setAvatar(data.url);
+          clearInterval(timerProgress);
+          setLoading(false);
+          setPercent(-INIT_PERSON);
+        }
+      } catch (error) {
+        return openNotification('error', 'Upload Image Failed', 'No files uploaded !');
+      }
+    };
 
+  const handleSubmit = async (values: FirstLoginDto) => {
+    const { firstName, lastName } = values;
+    form.resetFields();
+    try {
+      await userApi.updateUser({
+        firstName,
+        lastName,
+        avatar,
+      });
+      dispatch(userActions.getUserStart());
+      openNotification(
+        'success',
+        'Setup Successfully',
+        'Welcome to Winter Social Network'
+      );
+      form.resetFields();
+    } catch (error) {
+      const err = error as AxiosError;
+      const data: any = err.response?.data;
+      openNotification('error', 'Setup Failed', data?.message);
+    }
+  };
 
   return (
     <Layout className='layout bg-white-F1cc'>
@@ -66,11 +106,16 @@ const FirstLogin = () => {
         }}
         className='bg-white-default rounded-b-xl shadow-md shadow-white-gainsboro'
       >
-        <div>
+        <div className='flex items-center'>
           <img
             src={logo}
             alt='logo'
             className='w-56 h-16 mt-[5px] ml-auto mr-auto'
+          />
+          <AiOutlinePoweroff
+            size={30}
+            color={'#FA003F'}
+            className='hover:scale-125 cursor-pointer'
           />
         </div>
       </Header>
@@ -92,17 +137,42 @@ const FirstLogin = () => {
             className='w-[70%] label-form'
           >
             <div className='text-center relative mb-10'>
-              <Avatar size={100} icon={<AiOutlineUser size={100} />} />
-              <input type='file' name='avatar' id='avatar' style={{display: 'none'}} hidden />
-              <label
-                htmlFor='avatar'
-                className='absolute ml-auto mr-auto right-[calc(50%_-_50px)] z-50 w-[100px] h-[100px] cursor-pointer overflow-hidden rounded-full hover:bg-gray-200 hover:bg-opacity-50 group'
-              >
-                <MdPhotoCamera
-                  size={30}
-                  className='text-gray-500 absolute rounded-full bottom-[35%] right-[35%] cursor-pointer hidden group-hover:block'
-                />
-              </label>
+              <Avatar
+                size={100}
+                icon={<AiOutlineUser size={100} />}
+                src={avatar}
+              />
+              <input
+                type='file'
+                name='image'
+                id='avatar-upload'
+                style={{ display: 'none' }}
+                hidden
+                onChange={changeAvatar}
+              />
+              {loading ? (
+                <div
+                  className='absolute right-[calc(50%_-_50px)] bottom-[calc(50%_-_50px)] z-50 w-[100px] h-[100px] overflow-hidden rounded-full bg-gray-200 bg-opacity-80'
+                >
+                  <Progress
+                    type='circle'
+                    percent={percent}
+                    showInfo={false}
+                    width={60}
+                    className='absolute right-[calc(50%_-_30px)] bottom-[20%]'
+                  />
+                </div>
+              ) : (
+                <label
+                  htmlFor='avatar-upload'
+                  className='absolute ml-auto mr-auto right-[calc(50%_-_50px)] z-50 w-[100px] h-[100px] cursor-pointer overflow-hidden rounded-full hover:bg-gray-200 hover:bg-opacity-50 group'
+                >
+                  <MdPhotoCamera
+                    size={25}
+                    className='text-gray-500 absolute rounded-full bottom-[35%] right-[37%] cursor-pointer hidden group-hover:block'
+                  />
+                </label>
+              )}
             </div>
 
             <Form.Item
@@ -151,6 +221,7 @@ const FirstLogin = () => {
               <Button
                 type='primary'
                 htmlType='submit'
+                disabled={loading}
                 className='h-10 mt-5 w-full bg-[#2E2E38] hover:bg-[#121216] disabled:bg-white-F1cc  enabled:shadow-md enabled:shadow-purple-PinkLavender'
               >
                 <span className='text-base'>Start !</span>

@@ -8,9 +8,8 @@ export interface UserInformation {
   following: number;
 }
 
-// export interface UpdateUser {
-//   firstName?: string;
-//   lastName?: string;
-//   avatar?: null | string;
-//   password?: string;
-// }
+export interface UpdateUser {
+  firstName?: string;
+  lastName?: string;
+  avatar?: null | string;
+}
