@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Form, Input, Typography, Layout, Avatar, Progress } from 'antd';
 import { AxiosError } from 'axios';
-import { Link } from 'react-router-dom';
 import { openNotification } from '../utils';
 import { useAppDispatch } from '../app/hooks';
 import { AiOutlineUser, AiOutlinePoweroff } from 'react-icons/ai';
@@ -10,6 +9,7 @@ import { FirstLogin as FirstLoginDto } from '../models';
 import userApi from '../api/userApi';
 import { userActions } from '../app/features/user/userSlice';
 import uploadApi from '../api/uploadApi';
+import authApi from '../api/authApi';
 
 const { Header, Content, Footer } = Layout;
 const logo = require('../assets/logo.png');
@@ -94,6 +94,10 @@ const FirstLogin = () => {
     }
   };
 
+  const handleSignOut = async() => {
+    await authApi.signOut();
+  }
+
   return (
     <Layout className='layout bg-white-F1cc'>
       <Header
@@ -116,6 +120,7 @@ const FirstLogin = () => {
             size={30}
             color={'#FA003F'}
             className='hover:scale-125 cursor-pointer'
+            onClick={handleSignOut}
           />
         </div>
       </Header>

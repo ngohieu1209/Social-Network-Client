@@ -27,7 +27,7 @@ const authApi = {
     });
   },
 
-  logout: async () => {
+  signOut: async () => {
     await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/v1/auth/logout`);
     localStorage.removeItem('firstLogin');
     window.location.href = '/';

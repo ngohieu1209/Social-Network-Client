@@ -1,13 +1,13 @@
-import React from 'react';
 import { Navigate, Outlet } from 'react-router';
 
 type ProtectedProps = {
-  isLogged: boolean;
+  logged: boolean;
   redirectPath?: string;
+  loading?: boolean;
 }
 
-const ProtectedRoute = ({ isLogged, redirectPath='/signin' }: ProtectedProps) => {
-  return isLogged ? <Outlet /> : <Navigate to={redirectPath} replace />;
+const ProtectedRoute = ({ logged, redirectPath='signin', loading=false }: ProtectedProps) => {
+  return logged ? <Outlet /> : <Navigate to={redirectPath} replace />;
 };
 
 export default ProtectedRoute;

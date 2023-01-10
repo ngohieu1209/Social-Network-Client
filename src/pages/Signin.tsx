@@ -6,6 +6,7 @@ import { Signin as SigninDto } from '../models';
 import { openNotification } from '../utils';
 import { useAppDispatch } from '../app/hooks'
 import { authActions } from '../app/features/auth/authSlice';
+import { userActions } from '../app/features/user/userSlice';
 
 const tailFormItemLayout = {
   wrapperCol: {
@@ -34,6 +35,7 @@ const Signin = () => {
         password,
       });
       dispatch(authActions.loginStart());
+      dispatch(userActions.getUserStart());
       openNotification(
         'success',
         'Sign In Successfully',
