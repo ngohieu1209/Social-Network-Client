@@ -2,20 +2,28 @@ import { Avatar, Button } from 'antd';
 import React from 'react';
 import { Image } from 'antd';
 import { FiMoreHorizontal } from 'react-icons/fi';
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { AiFillHeart, AiOutlineHeart, AiOutlineUser } from 'react-icons/ai';
 import { FaRegCommentAlt } from 'react-icons/fa';
+import { useAppSelector } from '../app/hooks';
+import { AppState } from '../app/store';
+
+const picture_loading_failed = require('../assets/images/picture-loading-failed.png');
 
 const ListPost = () => {
+
+  const user = useAppSelector((state: AppState) => state.user.data);
+
   return (
-    <div className=' bg-white-default mt-8 mb-6 rounded-xl shadow-inner shadow-white-gainsboro relative'>
+    <div className=' bg-white-default mt-8 mb-6 rounded-xl shadow-md shadow-white-gainsboro relative'>
       <div className='flex ml-5 pt-4'>
         <Avatar
-          size={56}
-          src='https://i.pinimg.com/550x/3c/61/48/3c6148580a9d33efb242b5c369d0a5be.jpg'
+          size={48}
+          icon={<AiOutlineUser size={46} />}
+          src={user.avatar}
         />
         <div className='flex flex-col ml-2'>
           <span className='font-semibold'>Ngo Trung Hieu</span>
-          <span className='text-gray-400'>2 hours ago</span>
+          <span className='text-gray-400 text-sm'>2 hours ago</span>
         </div>
       </div>
 
@@ -39,6 +47,10 @@ const ListPost = () => {
           className='w-full rounded-xl'
           style={{ aspectRatio: 'auto' }}
           src='https://afamilycdn.com/150157425591193600/2020/11/26/envfb8uucaauczf-16063924492751905819335-1606405159242-16064051600031572598975.jpg'
+          preview={{
+            maskClassName: 'rounded-xl',
+          }}
+          fallback={picture_loading_failed}
         />
       </div>
       <div className='mt-4 ml-5 pb-4 flex items-center'>

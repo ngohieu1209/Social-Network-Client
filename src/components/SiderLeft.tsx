@@ -4,32 +4,38 @@ import {
   AiOutlineHeart,
   AiOutlineEye,
   AiOutlineInstagram,
+  AiOutlineUser,
 } from 'react-icons/ai';
 import { BsFacebook } from 'react-icons/bs';
+import { useAppSelector } from '../app/hooks';
+import { AppState } from '../app/store';
 
 const { Sider } = Layout;
 
 const SiderLeft = () => {
+
+  const user = useAppSelector((state: AppState) => state.user.data);
+
   return (
     <Sider
       className='bg-white-F1cc basis-2/6 max-w-lg'
       style={{
         overflow: 'auto',
         height: '100vh',
-        position: 'sticky',
         top: 0,
         left: 0,
       }}
     >
-      <div className='fixed left-40 top-20 w-80 bg-white-default mt-8 mb-6 rounded-xl shadow-inner shadow-white-gainsboro'>
+      <div className='w-1/5 fixed left-20 bg-white-default mt-9 mb-6 rounded-xl shadow-md shadow-white-gainsboro'>
         <div className='flex ml-5 pt-4'>
           <Avatar
-            size={56}
-            src='https://i.pinimg.com/550x/3c/61/48/3c6148580a9d33efb242b5c369d0a5be.jpg'
+            size={48}
+            icon={<AiOutlineUser size={46} />}
+            src={user.avatar}
           />
           <div className='flex flex-col ml-2'>
-            <span className='font-semibold'>Ngo Trung Hieu</span>
-            <span className='text-gray-500'>Ha Noi</span>
+            <span className='font-semibold'>{`${user.firstName} ${user.lastName}`}</span>
+            <span className='text-gray-500 text-sm'>Ha Noi</span>
           </div>
         </div>
 
@@ -37,12 +43,12 @@ const SiderLeft = () => {
 
         <div className='ml-5 mb-1 flex items-center'>
           <AiOutlineHeart className='text-pink-500' size={20} />
-          <span className='mx-2'>10K</span>
+          <span className='mx-2'>{user.followers}</span>
           <span className='text-gray-500'>Follows</span>
         </div>
         <div className='ml-5 mb-2 flex items-center'>
           <AiOutlineEye className='text-blue-500' size={20} />
-          <span className='mx-2'>10</span>
+          <span className='mx-2'>{user.following}</span>
           <span className='text-gray-500'>Following</span>
         </div>
         <div className='mx-5 text-gray-600 text-left text-sm'>
