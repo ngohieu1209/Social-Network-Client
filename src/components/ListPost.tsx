@@ -43,15 +43,38 @@ const ListPost = () => {
         </span>
       </div>
       <div className='ml-5 mr-5'>
-        <Image
-          className='w-full rounded-xl'
-          style={{ aspectRatio: 'auto' }}
-          src='https://afamilycdn.com/150157425591193600/2020/11/26/envfb8uucaauczf-16063924492751905819335-1606405159242-16064051600031572598975.jpg'
-          preview={{
-            maskClassName: 'rounded-xl',
-          }}
-          fallback={picture_loading_failed}
-        />
+        <Image.PreviewGroup>
+          <Image
+            className='rounded-xl'
+            width={'50%'}
+            // style={{ aspectRatio: 'auto' }}
+            src='https://afamilycdn.com/150157425591193600/2020/11/26/envfb8uucaauczf-16063924492751905819335-1606405159242-16064051600031572598975.jpg'
+            preview={{
+              maskClassName: 'rounded-xl',
+            }}
+            fallback={picture_loading_failed}
+          />
+          <Image
+            className='rounded-xl'
+            width={'50%'}
+            // style={{ aspectRatio: 'auto' }}
+            src='https://afamilycdn.com/150157425591193600/2020/11/26/envfb8uucaauczf-16063924492751905819335-1606405159242-16064051600031572598975.jpg'
+            preview={{
+              maskClassName: 'rounded-xl',
+            }}
+            fallback={picture_loading_failed}
+          />
+          <Image
+            className='rounded-xl'
+            width={'33%'}
+            // style={{ aspectRatio: 'auto' }}
+            src='https://afamilycdn.com/150157425591193600/2020/11/26/envfb8uucaauczf-16063924492751905819335-1606405159242-16064051600031572598975.jpg'
+            preview={{
+              maskClassName: 'rounded-xl',
+            }}
+            fallback={picture_loading_failed}
+          />
+        </Image.PreviewGroup>
       </div>
       <div className='mt-4 ml-5 pb-4 flex items-center'>
         <div className='flex mr-5'>

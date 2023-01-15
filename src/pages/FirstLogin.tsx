@@ -14,7 +14,7 @@ import authApi from '../api/authApi';
 const { Header, Content, Footer } = Layout;
 const logo = require('../assets/logo.png');
 
-const INIT_PERSON = 30;
+const INIT_PERCENT = 30;
 
 const tailFormItemLayout = {
   wrapperCol: {
@@ -34,7 +34,7 @@ const FirstLogin = () => {
 
   const [avatar, setAvatar] = useState<null | string>(null);
   const [loading, setLoading] = useState(false);
-  const [percent, setPercent] = useState<number>(-INIT_PERSON);
+  const [percent, setPercent] = useState<number>(-INIT_PERCENT);
 
   const dispatch = useAppDispatch();
 
@@ -57,14 +57,14 @@ const FirstLogin = () => {
               if (prev >= 60) {
                 clearInterval(timerProgress);
               }
-              return prev + INIT_PERSON;
+              return prev + INIT_PERCENT;
             });
           }, 1000);
           const data = await uploadApi.uploadImage(formData);
           setAvatar(data.url);
           clearInterval(timerProgress);
           setLoading(false);
-          setPercent(-INIT_PERSON);
+          setPercent(-INIT_PERCENT);
         }
       } catch (error) {
         return openNotification('error', 'Upload Image Failed', 'No files uploaded !');

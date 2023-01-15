@@ -45,5 +45,40 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addVariant }) {
+      addVariant(
+        'ant-modal-header',
+        '&>div.ant-modal-content>div.ant-modal-header'
+      );
+      addVariant(
+        'ant-modal-header-hover',
+        '&>div.ant-modal-content>div.ant-modal-header:hover'
+      );
+      addVariant(
+        'ant-modal-title',
+        '&>div.ant-modal-content>div.ant-modal-header>div.ant-modal-title'
+      );
+      addVariant(
+        'ant-modal-title-hover',
+        '&>div.ant-modal-content>div.ant-modal-header>div.ant-modal-title:hover'
+      );
+      addVariant(
+        'ant-modal-body',
+        '&>div.ant-modal-content>div.ant-modal-body'
+      );
+      addVariant(
+        'ant-modal-body-hover',
+        '&>div.ant-modal-content>div.ant-modal-body:hover'
+      );
+      addVariant(
+        'ant-modal-footer-btn',
+        '&>div.ant-modal-content>div.ant-modal-footer>button.ant-btn'
+      );
+      addVariant(
+        'ant-modal-footer-btn-hover',
+        '&>div.ant-modal-content>div.ant-modal-footer>button.ant-btn:hover'
+      );
+    }
+  ],
 };
