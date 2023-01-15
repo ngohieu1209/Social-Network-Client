@@ -1,14 +1,29 @@
 import { Avatar, Select } from 'antd';
+import { useState } from 'react';
 import { AiOutlineUser } from 'react-icons/ai';
 import { BsFillPlayBtnFill, BsImageFill } from 'react-icons/bs';
 import { FaHashtag } from 'react-icons/fa';
 import { FiLink } from 'react-icons/fi';
 import { useAppSelector } from '../app/hooks';
 import { AppState } from '../app/store';
+import ModalCreatePost from './ModalCreatePost';
 
 const CreatePost = () => {
-
   const user = useAppSelector((state: AppState) => state.user.data);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <div className=' bg-white-default mt-9 mb-6 rounded-xl shadow-md shadow-white-gainsboro'>
@@ -25,7 +40,9 @@ const CreatePost = () => {
           onChange={(value) => console.log(value)}
           showArrow={false}
           notFoundContent={null}
+          onClick={showModal}
         />
+        <ModalCreatePost open={isModalOpen} onOk={handleOk} onCancel={handleCancel} />
       </div>
 
       <hr className='mx-5 my-5 h-px bg-gray-200 dark:bg-gray-700' />
