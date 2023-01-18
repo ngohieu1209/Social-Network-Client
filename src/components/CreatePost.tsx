@@ -26,7 +26,7 @@ const CreatePost = () => {
   };
 
   return (
-    <div className=' bg-white-default mt-9 mb-6 rounded-xl shadow-md shadow-white-gainsboro'>
+    <div className=' bg-white-default mt-9 mb-12 rounded-xl shadow-md shadow-white-gainsboro'>
       <div className='flex items-center ml-5 pt-4'>
         <Avatar
           size={48}
