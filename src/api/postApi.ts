@@ -19,6 +19,14 @@ const postApi = {
       console.log(error);
     }
   },
+  getAllPost: async (page: number) => {
+    try {
+      const { data } = await axiosJWT.get(`/post?page=${page}`);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 };
 
 export default postApi;

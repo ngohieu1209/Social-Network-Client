@@ -1,20 +1,62 @@
-import { Avatar, Button } from 'antd';
+import { Avatar, Dropdown, MenuProps, Space } from 'antd';
 import React from 'react';
 import { Image } from 'antd';
+import moment from 'moment';
 import { FiMoreHorizontal } from 'react-icons/fi';
-import { AiFillHeart, AiOutlineHeart, AiOutlineUser } from 'react-icons/ai';
-import { FaRegCommentAlt } from 'react-icons/fa';
+import { AiFillHeart, AiFillLock, AiOutlineHeart, AiOutlineUser } from 'react-icons/ai';
+import { FaRegCommentAlt, FaUserFriends } from 'react-icons/fa';
+import { PostInformation } from '../models/post';
+import { BiEditAlt } from 'react-icons/bi';
+import { MdDeleteOutline, MdPublic } from 'react-icons/md';
 import { useAppSelector } from '../app/hooks';
 import { AppState } from '../app/store';
 
 const picture_loading_failed = require('../assets/images/picture-loading-failed.png');
 
-const ListPost = () => {
+type Props = {
+  post: PostInformation
+};
 
-  const user = useAppSelector((state: AppState) => state.user.data);
+const items: MenuProps['items'] = [
+  {
+    key: '1',
+    label: 'Edit',
+    icon: <BiEditAlt size={15} className='group-hover:text-[#3ACF3F]' />,
+    className: 'group',
+    style: {
+      fontWeight: 600,
+      fontSize: 16,
+    },
+  },
+  {
+    key: '2',
+    label: 'Remove',
+    icon: <MdDeleteOutline size={15} className='group-hover:text-[#FF101F]' />,
+    className: 'group',
+    style: {
+      fontWeight: 600,
+      fontSize: 16,
+    },
+  },
+];
+const ListPost: React.FC<Props> = ({ post }) => {
+
+  const currentUser = useAppSelector((state: AppState) => state.user.data);
+
+  const { upload, userId: user } = post;
+
+  const IconMode = (): React.ReactElement => {
+    if (post.postMode === 'public') {
+      return <MdPublic className='mr-1' />;
+    } else if(post.postMode === 'friend') {
+      return <FaUserFriends className='mr-1' />;
+    } else {
+      return <AiFillLock className='mr-1' />;
+    }
+  }
 
   return (
-    <div className=' bg-white-default mt-8 mb-6 rounded-xl shadow-md shadow-white-gainsboro relative'>
+    <div className=' bg-white-default mb-5 rounded-xl shadow-md shadow-white-gainsboro relative'>
       <div className='flex ml-5 pt-4'>
         <Avatar
           size={48}
@@ -22,68 +64,62 @@ const ListPost = () => {
           src={user.avatar}
         />
         <div className='flex flex-col ml-2'>
-          <span className='font-semibold'>Ngo Trung Hieu</span>
-          <span className='text-gray-400 text-sm'>2 hours ago</span>
+          <span className='font-semibold'>{`${user.firstName} ${user.lastName}`}</span>
+          <span className='text-gray-400 text-sm flex items-center'>
+            <IconMode />
+            {moment(post.createdAt).add(7, 'hours').fromNow()}
+          </span>
         </div>
       </div>
 
-      <div className='absolute top-6 right-5 cursor-pointer'>
-        <FiMoreHorizontal
-          className='text-[#6E6E72] hover:text-[#3C3C3E]'
-          size={25}
-        />
-      </div>
+      {currentUser.id === user.id && (
+        <div className='absolute top-6 right-5 cursor-pointer'>
+          <Dropdown menu={{ items }} trigger={['click']} placement='bottom'>
+            <Space>
+              <FiMoreHorizontal
+                className='text-[#6E6E72] hover:text-[#3C3C3E]'
+                size={25}
+              />
+            </Space>
+          </Dropdown>
+        </div>
+      )}
 
       {/* <hr className='mx-5 my-3 h-px bg-gray-200 dark:bg-gray-700' /> */}
 
       <div className='mx-5 my-3 text-left text-base'>
-        <span>
-          It is a long established fact that a reader will be distracted by the
-          readable content of a page when looking at its layout
-        </span>
+        <span>{post.content}</span>
       </div>
       <div className='ml-5 mr-5'>
         <Image.PreviewGroup>
-          <Image
-            className='rounded-xl'
-            width={'50%'}
-            // style={{ aspectRatio: 'auto' }}
-            src='https://afamilycdn.com/150157425591193600/2020/11/26/envfb8uucaauczf-16063924492751905819335-1606405159242-16064051600031572598975.jpg'
-            preview={{
-              maskClassName: 'rounded-xl',
-            }}
-            fallback={picture_loading_failed}
-          />
-          <Image
-            className='rounded-xl'
-            width={'50%'}
-            // style={{ aspectRatio: 'auto' }}
-            src='https://afamilycdn.com/150157425591193600/2020/11/26/envfb8uucaauczf-16063924492751905819335-1606405159242-16064051600031572598975.jpg'
-            preview={{
-              maskClassName: 'rounded-xl',
-            }}
-            fallback={picture_loading_failed}
-          />
-          <Image
-            className='rounded-xl'
-            width={'33%'}
-            // style={{ aspectRatio: 'auto' }}
-            src='https://afamilycdn.com/150157425591193600/2020/11/26/envfb8uucaauczf-16063924492751905819335-1606405159242-16064051600031572598975.jpg'
-            preview={{
-              maskClassName: 'rounded-xl',
-            }}
-            fallback={picture_loading_failed}
-          />
+          {upload.length > 0 &&
+            upload.map((item) => {
+              return (
+                <Image
+                  key={item.id}
+                  className='rounded-xl ml-1 pl-1 pr-1'
+                  width={`${
+                    upload.length !== 4 ? 100 / upload.length - 1 : 100 / 2 - 1
+                  }%`}
+                  // style={{ aspectRatio: 'auto' }}
+                  src={item.url}
+                  preview={{
+                    maskClassName: 'rounded-xl ml-2',
+                  }}
+                  fallback={picture_loading_failed}
+                />
+              );
+            })}
         </Image.PreviewGroup>
       </div>
       <div className='mt-4 ml-5 pb-4 flex items-center'>
         <div className='flex mr-5'>
           <AiFillHeart size={28} className='mr-1 text-red-500' />
-          <span>99</span>
+          <span>{post.commentsCount}</span>
         </div>
         <div className='flex items-center'>
           <FaRegCommentAlt size={23} className='mr-1' />
-          <span>99</span>
+          <span>{post.likesCount}</span>
         </div>
       </div>
     </div>
