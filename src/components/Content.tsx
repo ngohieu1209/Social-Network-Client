@@ -1,7 +1,8 @@
 import { Layout, Skeleton } from 'antd';
 import { useEffect, useRef, useState } from 'react';
-import postApi from '../api/postApi';
-import { PostInformation } from '../models/post';
+import { postActions } from '../app/features/post/postSlice';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { AppState } from '../app/store';
 import CreatePost from './CreatePost';
 import ListPost from './ListPost';
 
@@ -10,9 +11,10 @@ let timer: NodeJS.Timeout | null = null;
 
 const ContentComponent = () => {
   const [loading, setLoading] = useState(false);
-  const [posts, setPosts] = useState<PostInformation[]>([]);
   const [page, setPage] = useState(1);
   
+  const dispatch = useAppDispatch();
+  const posts = useAppSelector((state: AppState) => state.post.data);
   const mounted = useRef(false);
   
   const [newPosts, setNewPosts] = useState(false);
@@ -27,8 +29,7 @@ const ContentComponent = () => {
   const fetchPosts = async () => {
     setLoading(true);
     try {
-      const { data } = await postApi.getAllPost(page);
-      setPosts((oldPosts): PostInformation[] => [...oldPosts, ...data]);
+      dispatch(postActions.getPostStart({page}));
       setNewPosts(false);
       debounce(() => setLoading(false), 2000)
     } catch (error) {
