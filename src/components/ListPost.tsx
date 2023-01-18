@@ -1,5 +1,5 @@
 import { Avatar, Dropdown, MenuProps, Space } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import { Image } from 'antd';
 import moment from 'moment';
 import { FiMoreHorizontal } from 'react-icons/fi';
@@ -10,6 +10,7 @@ import { BiEditAlt } from 'react-icons/bi';
 import { MdDeleteOutline, MdPublic } from 'react-icons/md';
 import { useAppSelector } from '../app/hooks';
 import { AppState } from '../app/store';
+import ModalEditPost from './ModalEditPost';
 
 const picture_loading_failed = require('../assets/images/picture-loading-failed.png');
 
@@ -17,29 +18,21 @@ type Props = {
   post: PostInformation
 };
 
-const items: MenuProps['items'] = [
-  {
-    key: '1',
-    label: 'Edit',
-    icon: <BiEditAlt size={15} className='group-hover:text-[#3ACF3F]' />,
-    className: 'group',
-    style: {
-      fontWeight: 600,
-      fontSize: 16,
-    },
-  },
-  {
-    key: '2',
-    label: 'Remove',
-    icon: <MdDeleteOutline size={15} className='group-hover:text-[#FF101F]' />,
-    className: 'group',
-    style: {
-      fontWeight: 600,
-      fontSize: 16,
-    },
-  },
-];
 const ListPost: React.FC<Props> = ({ post }) => {
+
+   const [isModalOpen, setIsModalOpen] = useState(false);
+
+   const showModal = () => {
+     setIsModalOpen(true);
+  };
+  
+   const handleOk = () => {
+     setIsModalOpen(false);
+   };
+
+   const handleCancel = () => {
+     setIsModalOpen(false);
+   };
 
   const currentUser = useAppSelector((state: AppState) => state.user.data);
 
@@ -55,6 +48,32 @@ const ListPost: React.FC<Props> = ({ post }) => {
     }
   }
 
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: 'Edit',
+      icon: <BiEditAlt size={15} className='group-hover:text-[#3ACF3F]' />,
+      className: 'group',
+      style: {
+        fontWeight: 600,
+        fontSize: 16,
+      },
+      onClick: () => {showModal()}
+    },
+    {
+      key: '2',
+      label: 'Remove',
+      icon: (
+        <MdDeleteOutline size={15} className='group-hover:text-[#FF101F]' />
+      ),
+      className: 'group',
+      style: {
+        fontWeight: 600,
+        fontSize: 16,
+      },
+    },
+  ];
+
   return (
     <div className=' bg-white-default mb-5 rounded-xl shadow-md shadow-white-gainsboro relative'>
       <div className='flex ml-5 pt-4'>
@@ -68,6 +87,12 @@ const ListPost: React.FC<Props> = ({ post }) => {
           <span className='text-gray-400 text-sm flex items-center'>
             <IconMode />
             {moment(post.createdAt).add(7, 'hours').fromNow()}
+            {post.updatedAt !== post.createdAt && (
+              <span className='text-xs italic ml-2 mt-1'>
+                Đã chỉnh sửa:{' '}
+                {moment(post.updatedAt).add(7, 'hours').calendar()}
+              </span>
+            )}
           </span>
         </div>
       </div>
@@ -84,8 +109,12 @@ const ListPost: React.FC<Props> = ({ post }) => {
           </Dropdown>
         </div>
       )}
-
-      {/* <hr className='mx-5 my-3 h-px bg-gray-200 dark:bg-gray-700' /> */}
+      <ModalEditPost
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        post={post}
+      />
 
       <div className='mx-5 my-3 text-left text-base'>
         <span>{post.content}</span>
@@ -96,7 +125,7 @@ const ListPost: React.FC<Props> = ({ post }) => {
             upload.map((item) => {
               return (
                 <Image
-                  key={item.id}
+                  key={item.id || item.public_id}
                   className='rounded-xl ml-1 pl-1 pr-1'
                   width={`${
                     upload.length !== 4 ? 100 / upload.length - 1 : 100 / 2 - 1

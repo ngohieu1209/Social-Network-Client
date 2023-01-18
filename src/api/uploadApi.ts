@@ -31,7 +31,16 @@ const uploadApi = {
     } catch (error) {
       console.log(error);
     }
-  }
+  },
+
+  deleteUpload: async (public_id: string) => {
+    try {
+      const { data } = await axiosJWT.delete(`upload/delete?id=${public_id}`);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
 
 export default uploadApi;
