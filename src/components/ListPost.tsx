@@ -1,4 +1,4 @@
-import { Avatar, Dropdown, MenuProps, Space } from 'antd';
+import { Avatar, Dropdown, MenuProps, Modal, Space } from 'antd';
 import React, { useState } from 'react';
 import { Image } from 'antd';
 import moment from 'moment';
@@ -8,9 +8,11 @@ import { FaRegCommentAlt, FaUserFriends } from 'react-icons/fa';
 import { PostInformation } from '../models/post';
 import { BiEditAlt } from 'react-icons/bi';
 import { MdDeleteOutline, MdPublic } from 'react-icons/md';
-import { useAppSelector } from '../app/hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { AppState } from '../app/store';
 import ModalEditPost from './ModalEditPost';
+import postApi from '../api/postApi';
+import { postActions } from '../app/features/post/postSlice';
 
 const picture_loading_failed = require('../assets/images/picture-loading-failed.png');
 
@@ -32,11 +34,20 @@ const ListPost: React.FC<Props> = ({ post }) => {
 
    const handleCancel = () => {
      setIsModalOpen(false);
-   };
+  };
 
   const currentUser = useAppSelector((state: AppState) => state.user.data);
-
+  const dispatch = useAppDispatch();
   const { upload, userId: user } = post;
+
+  const handleDeletePost = async (postId: string) => {
+    try {
+      dispatch(postActions.deletePost({postId}));
+      await postApi.deletePost(postId);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const IconMode = (): React.ReactElement => {
     if (post.postMode === 'public') {
@@ -71,8 +82,26 @@ const ListPost: React.FC<Props> = ({ post }) => {
         fontWeight: 600,
         fontSize: 16,
       },
+      onClick: () => {configWarning()}
     },
   ];
+
+  const configWarning = () => {
+    Modal.confirm({
+      icon: (
+        <MdDeleteOutline size={40} className='text-[#FF101F] mb-3' />
+      ),
+      title: <span>Are you sure delete this post?</span>,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      closable: true,
+      className: 'delete-confirm',
+      onOk: () => {
+        handleDeletePost(post.id);
+      }
+    });
+  }
 
   return (
     <div className=' bg-white-default mb-5 rounded-xl shadow-md shadow-white-gainsboro relative'>

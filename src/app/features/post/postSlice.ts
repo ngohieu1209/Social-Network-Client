@@ -41,6 +41,10 @@ export const postSlice = createSlice({
       state.data = [action.payload.post, ...state.data];
     },
 
+    deletePost(state, action: PayloadAction<{ postId: string }>) {
+      state.data = state.data.filter((post) => post.id !== action.payload.postId);
+    },
+
     deleteUploadPost(state, action: PayloadAction<{ postId: string, public_id: string }>) {
       state.data = state.data.reduce((filtered, option) => {
         if (option.id === action.payload.postId) {
