@@ -60,3 +60,12 @@ body {
   background: linear-gradient(to bottom, #3a5795 0%, #2b4886 100%);
   border-radius: 6px;
 }
+
+.delete-confirm .ant-modal-confirm-body {
+  flex-direction: column;
+}
+
+.delete-confirm .ant-modal-confirm-body span.ant-modal-confirm-title {
+  flex-basis: auto;
+  font-size: large;
+}

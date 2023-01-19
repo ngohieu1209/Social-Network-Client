@@ -44,6 +44,15 @@ const postApi = {
     } catch (error) {
       console.log(error);
     }
+  },
+
+  deletePost: async (id: string) => {
+    try {
+      const { data } = await axiosJWT.delete(`/post/${id}`);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 
