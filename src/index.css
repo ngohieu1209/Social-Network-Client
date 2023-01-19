@@ -62,7 +62,7 @@ body {
 }
 
 .delete-confirm .ant-modal-confirm-body {
-  flex-direction: column;
+  /* flex-direction: column; */
 }
 
 .delete-confirm .ant-modal-confirm-body span.ant-modal-confirm-title {
