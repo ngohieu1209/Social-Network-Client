@@ -118,7 +118,7 @@ const ListPost: React.FC<Props> = ({ post }) => {
         <Avatar
           size={48}
           icon={<AiOutlineUser size={46} />}
-          src={user.avatar}
+          src={user.avatar?.url}
         />
         <div className='flex flex-col ml-2'>
           <span className='font-semibold'>{`${user.firstName} ${user.lastName}`}</span>

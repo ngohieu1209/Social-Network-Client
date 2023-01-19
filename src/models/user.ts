@@ -1,9 +1,11 @@
+import { UploadInformation } from "./upload";
+
 export interface UserInformation {
   id: string;
   email: string;
   firstName: string | null;
   lastName: string | null;
-  avatar: string | null;
+  avatar: UploadInformation | null;
   followers: number;
   following: number;
 }

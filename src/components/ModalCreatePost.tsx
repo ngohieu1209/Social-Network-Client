@@ -112,7 +112,7 @@ const ModalCreatePost: React.FC<Props> = ({ open, onOk, onCancel }) => {
               <Avatar
                 size={64}
                 icon={<AiOutlineUser size={62} />}
-                src={user.avatar}
+                src={user.avatar?.url}
               />
               <div className='flex flex-col ml-2'>
                 <span className='font-semibold text-xl'>{`${user.firstName} ${user.lastName}`}</span>

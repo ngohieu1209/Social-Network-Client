@@ -5,7 +5,7 @@ import { openNotification } from '../utils';
 import { useAppDispatch } from '../app/hooks';
 import { AiOutlineUser, AiOutlinePoweroff } from 'react-icons/ai';
 import { MdPhotoCamera } from 'react-icons/md';
-import { FirstLogin as FirstLoginDto } from '../models';
+import { FirstLogin as FirstLoginDto, UploadInformation } from '../models';
 import userApi from '../api/userApi';
 import { userActions } from '../app/features/user/userSlice';
 import uploadApi from '../api/uploadApi';
@@ -32,7 +32,7 @@ const tailFormItemLayout = {
 
 const FirstLogin = () => {
 
-  const [avatar, setAvatar] = useState<null | string>(null);
+  const [avatar, setAvatar] = useState<null | UploadInformation>(null);
   const [loading, setLoading] = useState(false);
   const [percent, setPercent] = useState<number>(-INIT_PERCENT);
 
@@ -60,8 +60,9 @@ const FirstLogin = () => {
               return prev + INIT_PERCENT;
             });
           }, 1000);
-          const data = await uploadApi.uploadImage(formData);
-          setAvatar(data.url);
+          const img = await uploadApi.uploadImage(formData);
+          const data = await uploadApi.createUpload(img);
+          setAvatar(data);
           clearInterval(timerProgress);
           setLoading(false);
           setPercent(-INIT_PERCENT);
@@ -73,12 +74,11 @@ const FirstLogin = () => {
 
   const handleSubmit = async (values: FirstLoginDto) => {
     const { firstName, lastName } = values;
-    form.resetFields();
     try {
       await userApi.updateUser({
         firstName,
         lastName,
-        avatar,
+        avatar: avatar ? avatar.id : null,
       });
       dispatch(userActions.getUserStart());
       openNotification(
@@ -145,7 +145,7 @@ const FirstLogin = () => {
               <Avatar
                 size={100}
                 icon={<AiOutlineUser size={100} />}
-                src={avatar}
+                src={avatar?.url}
               />
               <input
                 type='file'
