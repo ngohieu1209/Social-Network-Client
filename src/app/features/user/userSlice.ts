@@ -10,15 +10,7 @@ interface UserState {
 
 const initialState: UserState = {
   loading: false,
-  data: {
-    id: '',
-    email: '',
-    firstName: '',
-    lastName: '',
-    avatar: '',
-    followers: 0,
-    following: 0,
-  },
+  data: {} as UserInformation,
   success: false,
   error: false,
 };

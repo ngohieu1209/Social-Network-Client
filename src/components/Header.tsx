@@ -109,7 +109,7 @@ const HeaderComponent = () => {
               size={30}
               className='mr-1'
               icon={<AiOutlineUser size={28} />}
-              src={user.avatar}
+              src={user.avatar?.url}
             />
             <span className='text-xl'>{user.lastName}</span>
             <Dropdown

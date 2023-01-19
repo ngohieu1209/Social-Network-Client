@@ -31,7 +31,7 @@ const CreatePost = () => {
         <Avatar
           size={48}
           icon={<AiOutlineUser size={46} />}
-          src={user.avatar}
+          src={user.avatar?.url}
         />
         <Select
           size='large'
