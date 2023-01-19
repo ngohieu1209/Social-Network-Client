@@ -13,6 +13,8 @@ import { AppState } from '../app/store';
 import ModalEditPost from './ModalEditPost';
 import postApi from '../api/postApi';
 import { postActions } from '../app/features/post/postSlice';
+import { openNotification } from '../utils';
+import { AxiosError } from 'axios';
 
 const picture_loading_failed = require('../assets/images/picture-loading-failed.png');
 
@@ -42,10 +44,17 @@ const ListPost: React.FC<Props> = ({ post }) => {
 
   const handleDeletePost = async (postId: string) => {
     try {
-      dispatch(postActions.deletePost({postId}));
+      dispatch(postActions.deletePost({ postId }));
       await postApi.deletePost(postId);
+      openNotification(
+        'success',
+        'Delete Post Successfully!',
+        ''
+      );
     } catch (error) {
-      console.log(error);
+      const err = error as AxiosError;
+      const data: any = err.response?.data;
+      openNotification('error', 'Delete Post Failed!', data.message);
     }
   };
 
@@ -89,7 +98,7 @@ const ListPost: React.FC<Props> = ({ post }) => {
   const configWarning = () => {
     Modal.confirm({
       icon: (
-        <MdDeleteOutline size={40} className='text-[#FF101F] mb-3' />
+        <MdDeleteOutline size={28} className='text-[#FF101F] mr-2' />
       ),
       title: <span>Are you sure delete this post?</span>,
       okText: 'Yes',

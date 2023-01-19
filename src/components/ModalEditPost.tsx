@@ -16,6 +16,7 @@ import uploadApi from '../api/uploadApi';
 import postApi from '../api/postApi';
 import { PostInformation } from '../models';
 import { postActions } from '../app/features/post/postSlice';
+import { AxiosError } from 'axios';
 
 const { TextArea } = Input;
 
@@ -107,10 +108,18 @@ const ModalEditPost: React.FC<Props> = ({ open, onOk, onCancel, post }) => {
           await uploadApi.deleteUpload(id);
         }
       }
+      setLoading(false);
+      openNotification(
+        'success',
+        'Edit Post Successfully!',
+        ''
+      );
     } catch (error) {
-      console.log(error);
+      setLoading(false);
+      const err = error as AxiosError;
+      const data: any = err.response?.data;
+      openNotification('error', 'Edit Post Failed!', data.message);
     }
-    setLoading(false);
     onOk();
     setFileRemove([]);
   };

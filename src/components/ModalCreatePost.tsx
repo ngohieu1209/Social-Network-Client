@@ -16,6 +16,7 @@ import { openNotification } from '../utils';
 import uploadApi from '../api/uploadApi';
 import postApi from '../api/postApi';
 import { postActions } from '../app/features/post/postSlice';
+import { AxiosError } from 'axios';
 
 const { TextArea } = Input;
 
@@ -62,23 +63,32 @@ const ModalCreatePost: React.FC<Props> = ({ open, onOk, onCancel }) => {
 
   const handlePost = async () => {
     setLoading(true);
-    const data = await postApi.createPost({ content, postMode });
-    if (fileList.length > 0) {
-      let formData = new FormData();
-      for (const file of fileList) {
-        formData.append('images', file.originFileObj as Blob);
+    try {
+      const data = await postApi.createPost({ content, postMode });
+      if (fileList.length > 0) {
+        let formData = new FormData();
+        for (const file of fileList) {
+          formData.append('images', file.originFileObj as Blob);
+        }
+        const images = await uploadApi.uploadImages(formData);
+        for (const image of images) {
+          await uploadApi.createUpload({ ...image, postId: data.id });
+        }
       }
-      const images = await uploadApi.uploadImages(formData);
-      for (const image of images) {
-        await uploadApi.createUpload({...image, postId: data.id});
-      }
+      const post = await postApi.getPostById(data.id);
+      dispatch(postActions.addPost({ post }));
+      setLoading(false);
+      openNotification('success', 'Upload Post Successfully!', '');
+    } catch (error) {
+      setLoading(false);
+      const err = error as AxiosError;
+      const data: any = err.response?.data;
+      openNotification('error', 'Upload Post Failed!', data.message);
     }
-    const post = await postApi.getPostById(data.id);
-    dispatch(postActions.addPost({ post }));
-    setLoading(false);
     onOk();
     setContent('');
     setFileList([]);
+    
   };
 
   return (
