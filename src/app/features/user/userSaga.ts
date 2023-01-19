@@ -7,15 +7,7 @@ function* getCurrentUserSaga(): any {
   try {
     const userInformation: UserInformation = yield call(userApi.getCurrentUser);
     if (userInformation) {
-      const data = {
-        id: userInformation.id,
-        email: userInformation.email,
-        firstName: userInformation.firstName,
-        lastName: userInformation.lastName,
-        avatar: userInformation.avatar,
-        followers: userInformation.followers,
-        following: userInformation.following,
-      };
+      const data = userInformation;
       yield put(userActions.getUserSuccess({ data }));
     } else {
       yield put(userActions.getUserFailed());
