@@ -18,7 +18,6 @@ const ActivationEmail = () => {
       const activationEmail = async () => {
         try {
           const { data } = await authApi.activationEmail(activateToken);
-          console.log(data);
           setSuccess(data.msg);
           setErr(''); 
         } catch (error) {

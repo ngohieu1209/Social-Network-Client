@@ -1,5 +1,5 @@
 import axiosJWT from "../interceptors/axios";
-import { UpdateUser } from "../models";
+import { SocialLinks, UpdateUser } from "../models";
 
 const userApi = {
   getCurrentUser: async () => {
@@ -13,11 +13,19 @@ const userApi = {
   updateUser: async (update: UpdateUser) => {
     try {
       const { data } = await axiosJWT.patch('/user/update', update);
-      console.log(data);
+      return data
     } catch (error) {
       console.log(error)
     }
   },
+  updateSocialLinks: async (update: Partial<SocialLinks>) => {
+    try {
+      const { data } = await axiosJWT.patch('/social-link', update);
+      return data
+    } catch (error) {
+      console.log(error)
+    }
+  }
 }
 
 export default userApi;

@@ -40,37 +40,37 @@ const FirstLogin = () => {
 
   const [form] = Form.useForm();
 
-    const changeAvatar = async (e: React.ChangeEvent<HTMLInputElement>) => {
-      try {
-        const file = e.target.files;
-        if (file && file.length > 0) {
-          const image = file[0];
-          if (image.size > 2 * 1024 * 1024)
-            return openNotification('error', 'Upload Image Failed', "Size too large");
-          if (!image.type.match(/\/(jpg|jpeg|png|gif)$/))
-            return openNotification('error', 'Upload Image Failed', 'File format is incorrect');
-          let formData = new FormData();
-          formData.append('image', image);
-          setLoading(true);
-          const timerProgress = setInterval(() => {
-            setPercent((prev) => {
-              if (prev >= 60) {
-                clearInterval(timerProgress);
-              }
-              return prev + INIT_PERCENT;
-            });
-          }, 1000);
-          const img = await uploadApi.uploadImage(formData);
-          const data = await uploadApi.createUpload(img);
-          setAvatar(data);
-          clearInterval(timerProgress);
-          setLoading(false);
-          setPercent(-INIT_PERCENT);
-        }
-      } catch (error) {
-        return openNotification('error', 'Upload Image Failed', 'No files uploaded !');
+  const changeAvatar = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      const file = e.target.files;
+      if (file && file.length > 0) {
+        const image = file[0];
+        if (image.size > 2 * 1024 * 1024)
+          return openNotification('error', 'Upload Image Failed', "Size too large");
+        if (!image.type.match(/\/(jpg|jpeg|png|gif)$/))
+          return openNotification('error', 'Upload Image Failed', 'File format is incorrect');
+        let formData = new FormData();
+        formData.append('image', image);
+        setLoading(true);
+        const timerProgress = setInterval(() => {
+          setPercent((prev) => {
+            if (prev >= 60) {
+              clearInterval(timerProgress);
+            }
+            return prev + INIT_PERCENT;
+          });
+        }, 1000);
+        const img = await uploadApi.uploadImage(formData);
+        const data = await uploadApi.createUpload(img);
+        setAvatar(data);
+        clearInterval(timerProgress);
+        setLoading(false);
+        setPercent(-INIT_PERCENT);
       }
-    };
+    } catch (error) {
+      return openNotification('error', 'Upload Image Failed', 'No files uploaded !');
+    }
+  };
 
   const handleSubmit = async (values: FirstLoginDto) => {
     const { firstName, lastName } = values;
