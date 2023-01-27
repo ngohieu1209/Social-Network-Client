@@ -5,6 +5,7 @@ import {
   AiOutlineEye,
   AiOutlineInstagram,
   AiOutlineUser,
+  AiOutlineGithub,
 } from 'react-icons/ai';
 import { BsFacebook } from 'react-icons/bs';
 import { useAppSelector } from '../app/hooks';
@@ -12,6 +13,14 @@ import { AppState } from '../app/store';
 import ModalEditUser from './ModalEditUser';
 
 const { Sider } = Layout;
+
+const getUsername = (url: string | null) => {
+  if (url === null) return '';
+  const regexUrl = url.match(/\/(\w+)/g);
+  if (regexUrl === null) return '';
+  const username = regexUrl[regexUrl.length - 1].substring(1);
+  return username;
+};
 
 const SiderLeft = () => {
 
@@ -49,7 +58,7 @@ const SiderLeft = () => {
           />
           <div className='flex flex-col ml-2'>
             <span className='font-semibold'>{`${user.firstName} ${user.lastName}`}</span>
-            <span className='text-gray-500 text-sm'>Ha Noi</span>
+            <span className='text-gray-500 text-sm'>{user.location}</span>
           </div>
         </div>
 
@@ -73,19 +82,53 @@ const SiderLeft = () => {
             <hr className='mx-5 my-3 h-px bg-gray-200 dark:bg-gray-700' />
             <div className='ml-5'>
               <span className='font-semibold text-gray-500'>MY PAGES</span>
-              <div className='flex mt-2'>
-                <AiOutlineInstagram className='text-white-F1 text-2xl instagram' />
-                <span className='ml-2'>Link instagram</span>
-              </div>
-              <div className='flex mt-2'>
-                <BsFacebook className='text-blue-500 text-2xl' />
-                <span className='ml-2'>Link facebook</span>
-              </div>
+              {user.links.linkFacebook && (
+                <button
+                  className='flex mt-2'
+                  onClick={() =>
+                    window.open(user.links?.linkFacebook || '', '_blank')
+                  }
+                >
+                  <BsFacebook className='text-blue-500 text-2xl' />
+                  <span className='ml-2'>
+                    {getUsername(user.links.linkFacebook)}
+                  </span>
+                </button>
+              )}
+              {user.links.linkInstagram && (
+                <button
+                  className='flex mt-2'
+                  onClick={() =>
+                    window.open(user.links?.linkInstagram || '', '_blank')
+                  }
+                >
+                  <AiOutlineInstagram className='text-white-F1 text-2xl instagram' />
+                  <span className='ml-2'>
+                    {getUsername(user.links.linkInstagram)}
+                  </span>
+                </button>
+              )}
+              {user.links.linkGithub && (
+                <button
+                  className='flex mt-2'
+                  onClick={() =>
+                    window.open(user.links?.linkGithub || '', '_blank')
+                  }
+                >
+                  <AiOutlineGithub className='text-2xl' />
+                  <span className='ml-2'>
+                    {getUsername(user.links.linkGithub)}
+                  </span>
+                </button>
+              )}
             </div>
           </>
         )}
         <div className='mt-4 pb-4 text-center'>
-          <Button className='w-5/6 font-semibold text-gray-500 hover:text-grey-darkLight hover:border-grey-darkLight hover:shadow-lg' onClick={showModal}>
+          <Button
+            className='w-5/6 font-semibold text-gray-500 hover:text-grey-darkLight hover:border-grey-darkLight hover:shadow-lg'
+            onClick={showModal}
+          >
             Edit
           </Button>
           <ModalEditUser

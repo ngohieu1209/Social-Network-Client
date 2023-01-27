@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserInformation } from '../../../models';
+import { SocialLinks, UploadInformation, UserInformation } from '../../../models';
 
 interface UserState {
   loading: boolean;
@@ -23,7 +23,7 @@ export const userSlice = createSlice({
       state.loading = true;
     },
 
-    getUserSuccess(state, action: PayloadAction<{data: UserInformation}>) {
+    getUserSuccess(state, action: PayloadAction<{ data: UserInformation }>) {
       state.loading = false;
       state.data = action.payload.data;
       state.success = true;
@@ -34,6 +34,39 @@ export const userSlice = createSlice({
       state.loading = false;
       state.success = false;
       state.error = true;
+    },
+
+    changeAvatar(state, action: PayloadAction<{ avatar: UploadInformation }>) {
+      state.data.avatar = action.payload.avatar;
+    },
+
+    changeUserBasicInfo(
+      state,
+      action: PayloadAction<{
+        key: keyof Pick<UserInformation, 'firstName' | 'lastName' | 'location' | 'bio'>;
+        value: string | null;
+      }>
+    ) {
+      state.data[`${action.payload.key}`] = action.payload.value;
+    },
+
+    changeSocialLinks(
+      state,
+      action: PayloadAction<{
+        key: keyof Pick<SocialLinks, 'linkFacebook' | 'linkInstagram' | 'linkGithub'>;
+        value: string | null;
+      }>
+    ) {
+      if (state.data.links) {
+        state.data.links[`${action.payload.key}`] = action.payload.value;
+      } else {
+        state.data.links = {
+          linkFacebook: null,
+          linkInstagram: null,
+          linkGithub: null,
+          [`${action.payload.key}`]: action.payload.value,
+        };
+      }
     },
   },
 });

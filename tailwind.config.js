@@ -32,10 +32,12 @@ module.exports = {
           darkLight: '#383838',
           dark: '#2C3333',
           darkHover: '#111313',
+          Cultured: '#F5F5F5',
         },
         purple: {
           FrenchMauve: '#C47BCC',
           Purpureus: '#A545B0',
+          DeepLilac: '#8954C2',
           PinkLavender: '#DEB6E2',
         },
       },
