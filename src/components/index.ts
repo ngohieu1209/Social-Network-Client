@@ -7,6 +7,8 @@ import FooterComponent from "./Footer";
 import CreatePost from "./CreatePost";
 import ListPost from "./ListPost";
 import ProtectedRoute from "./ProtectedRoute";
+import Personal from "./Personal";
+import SiderLeftPersonal from "./SiderLeftPersonal";
 
 export {
   Loading,
@@ -18,4 +20,6 @@ export {
   CreatePost,
   ListPost,
   ProtectedRoute,
+  Personal,
+  SiderLeftPersonal
 };

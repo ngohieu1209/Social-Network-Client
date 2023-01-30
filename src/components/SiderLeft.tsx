@@ -67,7 +67,7 @@ const SiderLeft = () => {
         <div className='ml-5 mb-1 flex items-center'>
           <AiOutlineHeart className='text-pink-500' size={20} />
           <span className='mx-2'>{user.followers}</span>
-          <span className='text-gray-500'>Follows</span>
+          <span className='text-gray-500'>Followers</span>
         </div>
         <div className='ml-5 mb-2 flex items-center'>
           <AiOutlineEye className='text-blue-500' size={20} />

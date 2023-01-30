@@ -1,4 +1,4 @@
-import { Layout, Skeleton } from 'antd';
+import { Empty, Layout, Skeleton } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { postActions } from '../app/features/post/postSlice';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
@@ -14,6 +14,7 @@ const ContentComponent = () => {
   const [page, setPage] = useState(1);
   
   const dispatch = useAppDispatch();
+  const userSuccess = useAppSelector((state: AppState) => state.user.success);
   const posts = useAppSelector((state: AppState) => state.post.data);
   const mounted = useRef(false);
   
@@ -40,7 +41,9 @@ const ContentComponent = () => {
   }
 
   useEffect(() => {
-    fetchPosts();
+    if (userSuccess) {
+      fetchPosts();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page])
   
@@ -69,9 +72,11 @@ const ContentComponent = () => {
   return (
     <Content className='bg-white-F1cc'>
       <CreatePost />
-      {posts.map((post) => (
-        <ListPost key={post.id} post={post} />
-      ))}
+      {posts.length > 0 ? (
+        posts.map((post) => <ListPost key={post.id} post={post} />)
+      ) : (
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+      )}
       {loading && (
         <div className='text-center'>
           <Skeleton active={true} avatar paragraph={{ rows: 4 }} />

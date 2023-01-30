@@ -15,6 +15,7 @@ import postApi from '../api/postApi';
 import { postActions } from '../app/features/post/postSlice';
 import { openNotification } from '../utils';
 import { AxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const picture_loading_failed = require('../assets/images/picture-loading-failed.png');
 
@@ -24,7 +25,10 @@ type Props = {
 
 const ListPost: React.FC<Props> = ({ post }) => {
 
-   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+    const navigate = useNavigate();
+
 
    const showModal = () => {
      setIsModalOpen(true);
@@ -119,9 +123,14 @@ const ListPost: React.FC<Props> = ({ post }) => {
           size={48}
           icon={<AiOutlineUser size={46} />}
           src={user.avatar?.url}
+          onClick={() => navigate(`/${user.id}`)}
+          className='cursor-pointer'
         />
         <div className='flex flex-col ml-2'>
-          <span className='font-semibold'>{`${user.firstName} ${user.lastName}`}</span>
+          <span
+            className='font-semibold cursor-pointer'
+            onClick={() => navigate(`/${user.id}`)}
+          >{`${user.firstName} ${user.lastName}`}</span>
           <span className='text-gray-400 text-sm flex items-center'>
             <IconMode />
             {moment(post.createdAt).add(7, 'hours').fromNow()}

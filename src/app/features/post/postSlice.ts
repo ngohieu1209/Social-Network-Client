@@ -23,9 +23,17 @@ export const postSlice = createSlice({
       state.loading = true;
     },
 
+    getPostPersonalStart(state, action: PayloadAction<{ page: number, userId: string }>) {
+      state.loading = true;
+    },
+
+    getResetPost(state) {
+      state.data = [];
+    },
+
     getPostSuccess(state, action: PayloadAction<{ data: PostInformation[] }>) {
       state.loading = false;
-      state.data = [...state.data,...action.payload.data];
+      state.data = [...state.data, ...action.payload.data];
       state.success = true;
       state.error = false;
     },
@@ -36,25 +44,38 @@ export const postSlice = createSlice({
       state.error = true;
     },
 
-
-    addPost(state, action: PayloadAction<{post: PostInformation}>) {
+    addPost(state, action: PayloadAction<{ post: PostInformation }>) {
       state.data = [action.payload.post, ...state.data];
     },
 
     deletePost(state, action: PayloadAction<{ postId: string }>) {
-      state.data = state.data.filter((post) => post.id !== action.payload.postId);
+      state.data = state.data.filter(
+        (post) => post.id !== action.payload.postId
+      );
     },
 
-    deleteUploadPost(state, action: PayloadAction<{ postId: string, public_id: string }>) {
+    deleteUploadPost(
+      state,
+      action: PayloadAction<{ postId: string; public_id: string }>
+    ) {
       state.data = state.data.reduce((filtered, option) => {
         if (option.id === action.payload.postId) {
-          option.upload = option.upload.filter((upload) => upload.public_id !== action.payload.public_id);
+          option.upload = option.upload.filter(
+            (upload) => upload.public_id !== action.payload.public_id
+          );
         }
         return filtered;
       }, state.data);
     },
 
-    updatePostBasicInfo(state, action: PayloadAction<{ postId: string, content: string, postMode: string }>) {
+    updatePostBasicInfo(
+      state,
+      action: PayloadAction<{
+        postId: string;
+        content: string;
+        postMode: string;
+      }>
+    ) {
       state.data = state.data.reduce((filtered, option) => {
         if (option.id === action.payload.postId) {
           option.content = action.payload.content;
@@ -64,7 +85,10 @@ export const postSlice = createSlice({
       }, state.data);
     },
 
-    updatePostUpload(state, action: PayloadAction<{ postId: string, upload: any }>) {
+    updatePostUpload(
+      state,
+      action: PayloadAction<{ postId: string; upload: any }>
+    ) {
       state.data = state.data.reduce((filtered, option) => {
         if (option.id === action.payload.postId) {
           option.upload = [...option.upload, ...action.payload.upload];
