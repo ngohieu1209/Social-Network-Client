@@ -4,9 +4,14 @@ import postApi from '../../../api/postApi';
 import { PostInformation } from '../../../models';
 import { postActions } from './postSlice';
 
-function* getPostsSaga(action: PayloadAction<{ page: number }>): any {
+function* getPostsSaga(action: PayloadAction<{ page: number, userId: string }>): any {
   try {
-    const posts = yield call(postApi.getAllPost, action.payload.page);
+    let posts = null
+    if (action.payload.userId) {
+      posts = yield call(postApi.getPostsByUserId, action.payload.userId, action.payload.page);
+    } else {
+      posts = yield call(postApi.getAllPost, action.payload.page);
+    }
     if (posts) {
       const data: PostInformation[] = posts.data;
       yield put(postActions.getPostSuccess({ data }));
@@ -20,4 +25,5 @@ function* getPostsSaga(action: PayloadAction<{ page: number }>): any {
 
 export default function* postSaga() {
   yield takeLatest(postActions.getPostStart.type, getPostsSaga);
+  yield takeLatest(postActions.getPostPersonalStart.type, getPostsSaga);
 }

@@ -104,19 +104,21 @@ const HeaderComponent = () => {
             </Badge>
             <span className='text-xl'>Message</span>
           </div>
-          <div className='flex items-center font-bold cursor-pointer'>
-            <Avatar
-              size={30}
-              className='mr-1'
-              icon={<AiOutlineUser size={28} />}
-              src={user.avatar?.url}
-            />
-            <span className='text-xl'>{user.lastName}</span>
+          <div className='flex items-center font-bold'>
+            <div className='flex items-center cursor-pointer' onClick={() => navigate(`/${user.id}`)}>
+              <Avatar
+                size={30}
+                className='mr-1'
+                icon={<AiOutlineUser size={28} />}
+                src={user.avatar?.url}
+                />
+              <span className='text-xl'>{user.lastName}</span>
+            </div>
             <Dropdown
               menu={{ items }}
               trigger={['click']}
               placement='bottom'
-              className='mt-1 ml-2'
+              className='mt-1 ml-2 cursor-pointer'
             >
               <Space>
                 <AiOutlineCaretDown size={20} />

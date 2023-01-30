@@ -37,6 +37,15 @@ const postApi = {
     }
   },
 
+  getPostsByUserId: async (userId: string, page: number) => {
+    try {
+      const { data } = await axiosJWT.get(`/post/user/${userId}?page=${page}`);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   getPostById: async (id: string) => {
     try {
       const { data } = await axiosJWT.get(`/post/${id}`);

@@ -10,6 +10,14 @@ const userApi = {
       console.log(error);
     }
   },
+  getUserById: async (id: string) => {
+    try {
+      const { data } = await axiosJWT.get(`/user/profile/${id}`);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
   updateUser: async (update: UpdateUser) => {
     try {
       const { data } = await axiosJWT.patch('/user/update', update);
