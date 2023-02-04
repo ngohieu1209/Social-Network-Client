@@ -1,5 +1,5 @@
 import { Avatar, Button, Layout } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AiOutlineHeart,
   AiOutlineEye,
@@ -8,6 +8,7 @@ import {
   AiOutlineGithub,
 } from 'react-icons/ai';
 import { BsFacebook } from 'react-icons/bs';
+import friendApi from '../api/friendApi';
 import { UserInformation } from '../models';
 
 const { Sider } = Layout;
@@ -25,6 +26,51 @@ type Props = {
 };
 
 const SiderLeftPersonal: React.FC<Props> = ({ user }) => {
+
+  const [isRequest, setIsRequest] = useState<'friend' | 'followers' | 'following' | null>(null);
+
+  const fetchRequest = async () => {
+    try {
+      if (!user) return;
+      const checkStatus = await friendApi.checkFriend(user.id);
+      setIsRequest(checkStatus);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchRequest();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user])
+
+  const handleFollow = async () => {
+    try {
+      if (user) {
+        if(isRequest === 'followers') {
+          await friendApi.acceptFriend(user.id)
+          setIsRequest('friend');
+        } else {
+          await friendApi.requestFriend(user.id);
+          setIsRequest('following');
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleUnFollow = async () => {
+    try {
+      if (user) {
+        await friendApi.deleteFriend(user.id);
+        setIsRequest(null);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <Sider
       className='bg-white-F1cc basis-2/6 max-w-lg'
@@ -112,12 +158,21 @@ const SiderLeftPersonal: React.FC<Props> = ({ user }) => {
             </>
           )}
           <div className='mt-4 pb-4 text-center'>
-            <Button
-              className='w-5/6 font-semibold text-gray-500 hover:text-grey-darkLight hover:border-grey-darkLight hover:shadow-lg'
-              // onClick={}
-            >
-              Follow
-            </Button>
+            {isRequest === 'following' || isRequest === 'friend' ? (  
+              <Button
+                className='w-5/6 font-semibold text-gray-500 hover:text-grey-darkLight hover:border-grey-darkLight hover:shadow-lg'
+                onClick={handleUnFollow}
+              >
+                UnFollow
+              </Button>
+            ) : (    
+              <Button
+                className='w-5/6 font-semibold text-gray-500 hover:text-grey-darkLight hover:border-grey-darkLight hover:shadow-lg'
+                onClick={handleFollow}
+              >
+                Follow
+              </Button>
+            ) }
           </div>
         </div>
       )}

@@ -54,9 +54,9 @@ const Personal: React.FC<Props> = ({ userId }) => {
     }, [page]);
     
   useEffect(() => {
-      dispatch(postActions.getResetPost())
+      dispatch(postActions.getPostReset())
       return () => {
-        dispatch(postActions.getResetPost())
+        dispatch(postActions.getPostReset())
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userId])
