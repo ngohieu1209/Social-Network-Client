@@ -1,5 +1,5 @@
 import { Avatar, Dropdown, MenuProps, Modal, Space } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image } from 'antd';
 import moment from 'moment';
 import { FiMoreHorizontal } from 'react-icons/fi';
@@ -16,6 +16,7 @@ import { postActions } from '../app/features/post/postSlice';
 import { openNotification } from '../utils';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
+import likeApi from '../api/likeApi';
 
 const picture_loading_failed = require('../assets/images/picture-loading-failed.png');
 
@@ -26,6 +27,8 @@ type Props = {
 const ListPost: React.FC<Props> = ({ post }) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLike, setIsLike] = useState(false);
+  const [likesCount, setLikesCount] = useState(post.likesCount);
   
     const navigate = useNavigate();
 
@@ -116,6 +119,43 @@ const ListPost: React.FC<Props> = ({ post }) => {
     });
   }
 
+  const fetchLike = async () => {
+    try {
+      const listUser = await likeApi.getUserLikePost(post.id);
+      if (listUser.length > 0) {
+        const isUserLike = listUser.includes(currentUser.id);
+        if(isUserLike) {
+          setIsLike(true);
+        } else {
+          setIsLike(false);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(() => {
+    if (currentUser.id)
+      fetchLike();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [post]);
+
+  const handleLike = async () => {
+    try {
+      if (isLike) {
+        await likeApi.likePost(post.id);
+        setLikesCount((prev) => prev - 1);
+        setIsLike(false);
+      } else {
+        await likeApi.likePost(post.id);
+        setLikesCount((prev) => prev + 1);
+        setIsLike(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className=' bg-white-default mb-5 rounded-xl shadow-md shadow-white-gainsboro relative'>
       <div className='flex ml-5 pt-4'>
@@ -190,12 +230,16 @@ const ListPost: React.FC<Props> = ({ post }) => {
       </div>
       <div className='mt-4 ml-5 pb-4 flex items-center'>
         <div className='flex mr-5'>
-          <AiFillHeart size={28} className='mr-1 text-red-500' />
-          <span>{post.commentsCount}</span>
+          {isLike ? (
+            <AiFillHeart size={28} className='mr-1 text-red-500 cursor-pointer' onClick={handleLike}/>
+          ) : (
+            <AiOutlineHeart size={28} className='mr-1 cursor-pointer' onClick={handleLike} />
+          )}
+          <span>{likesCount}</span>
         </div>
         <div className='flex items-center'>
           <FaRegCommentAlt size={23} className='mr-1' />
-          <span>{post.likesCount}</span>
+          <span>{post.commentsCount}</span>
         </div>
       </div>
     </div>
