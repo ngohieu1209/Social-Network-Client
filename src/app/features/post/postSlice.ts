@@ -23,11 +23,14 @@ export const postSlice = createSlice({
       state.loading = true;
     },
 
-    getPostPersonalStart(state, action: PayloadAction<{ page: number, userId: string }>) {
+    getPostPersonalStart(
+      state,
+      action: PayloadAction<{ page: number; userId: string }>
+    ) {
       state.loading = true;
     },
 
-    getResetPost(state) {
+    getPostReset(state) {
       state.data = [];
     },
 

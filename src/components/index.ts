@@ -9,6 +9,7 @@ import ListPost from "./ListPost";
 import ProtectedRoute from "./ProtectedRoute";
 import Personal from "./Personal";
 import SiderLeftPersonal from "./SiderLeftPersonal";
+import ListFriends from "./ListFriends";
 
 export {
   Loading,
@@ -21,5 +22,6 @@ export {
   ListPost,
   ProtectedRoute,
   Personal,
-  SiderLeftPersonal
+  SiderLeftPersonal,
+  ListFriends,
 };

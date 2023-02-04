@@ -43,7 +43,7 @@ const getUsername = (url: string | null) => {
   return username;
 }
 
-const ModalEditUser: React.FC<Props> = ({ open, onOk, onCancel }) => {
+const ModalEditUser: React.FC<Props> = ({ open, onCancel }) => {
   const user = useAppSelector((state: AppState) => state.user.data);
   const [loading, setLoading] = useState(false);
   const [avatar, setAvatar] = useState<null | UploadInformation>(null);

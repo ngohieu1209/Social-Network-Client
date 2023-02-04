@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from './app/hooks';
 import { AppState } from './app/store';
 import { Loading, ProtectedRoute } from './components';
 import { ActivationEmail, ForgotPassword, HomePage, ResetPassword, Signin, Signup, Error, FirstLogin, PersonalPage } from './pages';
+import Friends from './pages/Friends';
 
 const App = () => {
 
@@ -27,8 +28,8 @@ const App = () => {
         <Route element={<ProtectedRoute isAllow={!!isLogged} />}>
           <Route path='/' element={loading ? <Loading /> : (!user.id || (user.firstName && user.lastName)) ? <HomePage /> : <FirstLogin />} />
           <Route path='/:userId' element={<PersonalPage />} />
+          <Route path='/friends' element={<Friends />} />
         </Route>
-
 
         <Route element={<ProtectedRoute isAllow={!isLogged} redirectPath='/' />}>
           <Route path='signin' element={<Signin />} />

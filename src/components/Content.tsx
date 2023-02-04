@@ -43,6 +43,9 @@ const ContentComponent = () => {
   useEffect(() => {
     if (userSuccess) {
       fetchPosts();
+      return () => {
+        dispatch(postActions.getPostReset());
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page])
