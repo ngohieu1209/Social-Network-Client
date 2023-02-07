@@ -6,7 +6,7 @@ import {
   AiOutlineCloseCircle,
   AiOutlineUser,
 } from 'react-icons/ai';
-import friendApi from '../api/friendApi';
+import friendApi from '../services/api/friendApi';
 import { friendActions } from '../app/features/friend/friendSlice';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { AppState } from '../app/store';

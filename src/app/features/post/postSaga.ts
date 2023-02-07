@@ -1,6 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { call, put, takeLatest } from 'redux-saga/effects';
-import postApi from '../../../api/postApi';
+import postApi from '../../../services/api/postApi';
 import { PostInformation } from '../../../models';
 import { postActions } from './postSlice';
 

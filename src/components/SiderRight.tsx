@@ -1,7 +1,7 @@
 import { Avatar, Button, Layout } from 'antd';
 import { FaHandshake, FaBirthdayCake } from 'react-icons/fa';
 import { AiOutlineCheck, AiOutlineClose, AiOutlineUser } from 'react-icons/ai';
-import friendApi from '../api/friendApi';
+import friendApi from '../services/api/friendApi';
 import { useEffect, useState } from 'react';
 import { Friend } from '../models';
 import ModalFriendRequest from './ModalFriendRequest';

@@ -2,7 +2,7 @@ import { Button, Form, Input, Typography } from 'antd';
 import { AxiosError } from 'axios';
 import { useParams } from 'react-router-dom';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
-import authApi from '../api/authApi';
+import authApi from '../services/api/authApi';
 import { openNotification } from '../utils';
 
 const tailFormItemLayout = {

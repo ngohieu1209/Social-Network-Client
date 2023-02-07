@@ -13,8 +13,8 @@ import { MdPublic } from 'react-icons/md';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { AppState } from '../app/store';
 import { openNotification } from '../utils';
-import uploadApi from '../api/uploadApi';
-import postApi from '../api/postApi';
+import uploadApi from '../services/api/uploadApi';
+import postApi from '../services/api/postApi';
 import { postActions } from '../app/features/post/postSlice';
 import { AxiosError } from 'axios';
 

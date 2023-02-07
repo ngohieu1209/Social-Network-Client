@@ -11,12 +11,12 @@ import { MdDeleteOutline, MdPublic } from 'react-icons/md';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { AppState } from '../app/store';
 import ModalEditPost from './ModalEditPost';
-import postApi from '../api/postApi';
+import postApi from '../services/api/postApi';
 import { postActions } from '../app/features/post/postSlice';
 import { openNotification } from '../utils';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
-import likeApi from '../api/likeApi';
+import likeApi from '../services/api/likeApi';
 
 const picture_loading_failed = require('../assets/images/picture-loading-failed.png');
 

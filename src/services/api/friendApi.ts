@@ -1,4 +1,4 @@
-import axiosJWT from '../interceptors/axios';
+import axiosJWT from '../../interceptors/axios';
 
 const friendApi = {
   requestFriend: async (friendId: string) => {

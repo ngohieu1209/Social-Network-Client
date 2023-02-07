@@ -6,10 +6,10 @@ import { useAppDispatch } from '../app/hooks';
 import { AiOutlineUser, AiOutlinePoweroff } from 'react-icons/ai';
 import { MdPhotoCamera } from 'react-icons/md';
 import { FirstLogin as FirstLoginDto, UploadInformation } from '../models';
-import userApi from '../api/userApi';
+import userApi from '../services/api/userApi';
 import { userActions } from '../app/features/user/userSlice';
-import uploadApi from '../api/uploadApi';
-import authApi from '../api/authApi';
+import uploadApi from '../services/api/uploadApi';
+import authApi from '../services/api/authApi';
 
 const { Header, Content, Footer } = Layout;
 const logo = require('../assets/logo.png');

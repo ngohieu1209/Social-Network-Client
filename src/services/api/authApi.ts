@@ -1,4 +1,4 @@
-import { Signup, Signin } from './../models/auth';
+import { Signup, Signin } from '../../models/auth';
 import axios from "axios";
 
 const authApi = {

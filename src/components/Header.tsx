@@ -6,7 +6,7 @@ import { BiLogOut } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../app/hooks';
 import { AppState } from '../app/store';
-import authApi from '../api/authApi';
+import authApi from '../services/api/authApi';
 
 const logo = require('../assets/logo.png');
 
