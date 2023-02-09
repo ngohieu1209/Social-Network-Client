@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PostInformation } from '../../../models';
+import { IComment } from '../../../models/comment';
 
 interface PostState {
   loading: boolean;
@@ -99,6 +100,35 @@ export const postSlice = createSlice({
         return filtered;
       }, state.data);
     },
+
+    addNewComment(state, action: PayloadAction<{ postId: string; comment: IComment }>) {
+      state.data = state.data.reduce((filtered, option) => {
+        if (option.id === action.payload.postId) {
+          const isCommentExist = option.comment.some(comment => comment.id === action.payload.comment.id);
+          if (!isCommentExist) {
+            option.comment = [action.payload.comment, ...option.comment];
+            option.commentsCount++;
+          }
+        }
+        return filtered;
+      }, state.data);
+    },
+
+    addCommentsStart(state, action: PayloadAction<{ postId: string;  page: number}>) {
+      return state;
+    },
+
+    addComments(state, action: PayloadAction<{ postId: string; comments: IComment[] }>) {
+      state.data = state.data.reduce((filtered, option) => {
+        if (option.id === action.payload.postId) {
+          if(option.hasOwnProperty('comment'))
+            option.comment = [...option.comment, ...action.payload.comments];
+          else 
+            option.comment = [...action.payload.comments];
+        }
+        return filtered;
+      }, state.data);
+    }
   },
 });
 

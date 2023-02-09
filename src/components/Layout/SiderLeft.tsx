@@ -8,9 +8,9 @@ import {
   AiOutlineGithub,
 } from 'react-icons/ai';
 import { BsFacebook } from 'react-icons/bs';
-import { useAppSelector } from '../app/hooks';
-import { AppState } from '../app/store';
-import ModalEditUser from './ModalEditUser';
+import { useAppSelector } from '../../app/hooks';
+import { AppState } from '../../app/store';
+import ModalEditUser from '../Modal/ModalEditUser';
 
 const { Sider } = Layout;
 

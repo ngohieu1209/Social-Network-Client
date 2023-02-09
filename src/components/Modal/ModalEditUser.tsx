@@ -7,16 +7,16 @@ import {
   AiOutlinePlusCircle,
   AiOutlineUser,
 } from 'react-icons/ai';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { AppState } from '../app/store';
-import { openNotification } from '../utils';
-import uploadApi from '../services/api/uploadApi';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { AppState } from '../../app/store';
+import { openNotification } from '../../utils';
+import uploadApi from '../../services/api/uploadApi';
 import { AxiosError } from 'axios';
 import { BiEditAlt } from 'react-icons/bi';
 import { MdPhotoCamera } from 'react-icons/md';
-import { SocialLinks, UpdateUser, UploadInformation } from '../models';
-import { userActions } from '../app/features/user/userSlice';
-import userApi from '../services/api/userApi';
+import { SocialLinks, UpdateUser, UploadInformation } from '../../models';
+import { userActions } from '../../app/features/user/userSlice';
+import userApi from '../../services/api/userApi';
 import { BsFacebook } from 'react-icons/bs';
 
 const INIT_PERCENT = 30;

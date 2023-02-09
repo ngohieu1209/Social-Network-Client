@@ -10,13 +10,14 @@ import { BiEditAlt } from 'react-icons/bi';
 import { MdDeleteOutline, MdPublic } from 'react-icons/md';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { AppState } from '../app/store';
-import ModalEditPost from './ModalEditPost';
+import ModalEditPost from './Modal/ModalEditPost';
 import postApi from '../services/api/postApi';
 import { postActions } from '../app/features/post/postSlice';
 import { openNotification } from '../utils';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import likeApi from '../services/api/likeApi';
+import Comment from './Comment';
 
 const picture_loading_failed = require('../assets/images/picture-loading-failed.png');
 
@@ -25,6 +26,7 @@ type Props = {
 };
 
 const ListPost: React.FC<Props> = ({ post }) => {
+  const { comment } = post;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLike, setIsLike] = useState(false);
@@ -174,12 +176,12 @@ const ListPost: React.FC<Props> = ({ post }) => {
           <span className='text-gray-400 text-sm flex items-center'>
             <IconMode />
             {moment(post.createdAt).add(7, 'hours').fromNow()}
-            {post.updatedAt !== post.createdAt && (
+            {/* {post.updatedAt !== post.createdAt && (
               <span className='text-xs italic ml-2 mt-1'>
                 Đã chỉnh sửa:{' '}
                 {moment(post.updatedAt).add(7, 'hours').calendar()}
               </span>
-            )}
+            )} */}
           </span>
         </div>
       </div>
@@ -231,9 +233,17 @@ const ListPost: React.FC<Props> = ({ post }) => {
       <div className='mt-4 ml-5 pb-4 flex items-center'>
         <div className='flex mr-5'>
           {isLike ? (
-            <AiFillHeart size={28} className='mr-1 text-red-500 cursor-pointer' onClick={handleLike}/>
+            <AiFillHeart
+              size={28}
+              className='mr-1 text-red-500 cursor-pointer'
+              onClick={handleLike}
+            />
           ) : (
-            <AiOutlineHeart size={28} className='mr-1 cursor-pointer' onClick={handleLike} />
+            <AiOutlineHeart
+              size={28}
+              className='mr-1 cursor-pointer'
+              onClick={handleLike}
+            />
           )}
           <span>{likesCount}</span>
         </div>
@@ -241,6 +251,9 @@ const ListPost: React.FC<Props> = ({ post }) => {
           <FaRegCommentAlt size={23} className='mr-1' />
           <span>{post.commentsCount}</span>
         </div>
+      </div>
+      <div>
+        <Comment postId={post.id} comments={comment && comment.slice().reverse()} count={post.commentsCount} />
       </div>
     </div>
   );

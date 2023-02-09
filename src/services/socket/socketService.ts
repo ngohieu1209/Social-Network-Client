@@ -21,8 +21,9 @@ class SocketService {
     this.socket.emit('Comment:NewComment', data);
   }
 
-  updateComment(commentHandler: ServerToClientEvents['onNewComment']) {
-    this.socket.on('onNewComment', commentHandler);
+  updateComment(commentHandler: ServerToClientEvents['onNewComment'] | null) {
+    if(commentHandler)
+      this.socket.on('onNewComment', commentHandler);
   }
 }
 

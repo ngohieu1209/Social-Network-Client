@@ -1,3 +1,4 @@
+import { IComment } from './comment';
 import { UserInformation } from "./user";
 
 export interface PostInformation {
@@ -10,6 +11,7 @@ export interface PostInformation {
   updatedAt: Date;
   userId: Partial<UserInformation>;
   upload: Upload[] | [];
+  comment: IComment[] | [];
 }
 
 interface Upload {

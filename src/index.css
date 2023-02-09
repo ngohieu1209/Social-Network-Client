@@ -22,6 +22,10 @@ body {
   color: '#F1F1F1';
 }
 
+.custom-meta-component .ant-card-meta-description {
+  color: #000000;
+}
+
 .ant-image-preview-img {
   display: unset !important;
 }

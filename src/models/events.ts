@@ -1,7 +1,7 @@
-import { AddCommentDto, IComment } from "./comment";
+import { AddCommentDto } from "./comment";
 
 export interface ServerToClientEvents {
-  "onNewComment": (data: IComment) => void;
+  "onNewComment": (data: any) => void;
 }
 
 export interface ClientToServerEvents {

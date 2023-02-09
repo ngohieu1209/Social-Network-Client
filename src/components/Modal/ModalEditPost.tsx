@@ -10,12 +10,12 @@ import {
 import { BsFillPlayBtnFill, BsImageFill } from 'react-icons/bs';
 import { FaUserFriends } from 'react-icons/fa';
 import { MdPublic } from 'react-icons/md';
-import { useAppDispatch } from '../app/hooks';
-import { openNotification } from '../utils';
-import uploadApi from '../services/api/uploadApi';
-import postApi from '../services/api/postApi';
-import { PostInformation } from '../models';
-import { postActions } from '../app/features/post/postSlice';
+import { useAppDispatch } from '../../app/hooks';
+import { openNotification } from '../../utils';
+import uploadApi from '../../services/api/uploadApi';
+import postApi from '../../services/api/postApi';
+import { PostInformation } from '../../models';
+import { postActions } from '../../app/features/post/postSlice';
 import { AxiosError } from 'axios';
 
 const { TextArea } = Input;

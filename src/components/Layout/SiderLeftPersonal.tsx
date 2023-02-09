@@ -8,8 +8,8 @@ import {
   AiOutlineGithub,
 } from 'react-icons/ai';
 import { BsFacebook } from 'react-icons/bs';
-import friendApi from '../services/api/friendApi';
-import { UserInformation } from '../models';
+import friendApi from '../../services/api/friendApi';
+import { UserInformation } from '../../models';
 
 const { Sider } = Layout;
 
