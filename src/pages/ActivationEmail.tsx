@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Result, Typography } from 'antd';
 import { AxiosError } from 'axios';
-import authApi from '../api/authApi';
+import authApi from '../services/api/authApi';
 
 const ActivationEmail = () => {
   const [err, setErr] = useState<string>('');

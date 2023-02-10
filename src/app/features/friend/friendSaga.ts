@@ -1,6 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { call, put, takeLatest } from 'redux-saga/effects';
-import friendApi from '../../../api/friendApi';
+import friendApi from '../../../services/api/friendApi';
 import { friendActions } from './friendSlice';
 
 function* getRequestFriendSaga(

@@ -2,7 +2,7 @@ import { Avatar, Button, Layout, Empty } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { AiOutlineUser } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
-import friendApi from '../api/friendApi';
+import friendApi from '../services/api/friendApi';
 import { friendActions } from '../app/features/friend/friendSlice';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { AppState } from '../app/store';

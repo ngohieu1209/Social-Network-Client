@@ -1,7 +1,7 @@
 import { Avatar, Modal, Select, Input, Upload, Spin } from 'antd';
 import type { UploadFile, UploadProps } from 'antd/es/upload/interface';
 import ImgCrop from 'antd-img-crop';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   AiFillLock,
   AiOutlineCloseCircle,
@@ -10,12 +10,12 @@ import {
 import { BsFillPlayBtnFill, BsImageFill } from 'react-icons/bs';
 import { FaUserFriends } from 'react-icons/fa';
 import { MdPublic } from 'react-icons/md';
-import { useAppDispatch } from '../app/hooks';
-import { openNotification } from '../utils';
-import uploadApi from '../api/uploadApi';
-import postApi from '../api/postApi';
-import { PostInformation } from '../models';
-import { postActions } from '../app/features/post/postSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { AppState } from '../../app/store';
+import { openNotification } from '../../utils';
+import uploadApi from '../../services/api/uploadApi';
+import postApi from '../../services/api/postApi';
+import { postActions } from '../../app/features/post/postSlice';
 import { AxiosError } from 'axios';
 
 const { TextArea } = Input;
@@ -24,31 +24,15 @@ type Props = {
   open: boolean;
   onOk: () => void;
   onCancel: () => void;
-  post: PostInformation;
 };
 
-const ModalEditPost: React.FC<Props> = ({ open, onOk, onCancel, post }) => {
-  const { upload, userId: user } = post;
-
+const ModalCreatePost: React.FC<Props> = ({ open, onOk, onCancel }) => {
   const [loading, setLoading] = useState(false);
-  const [content, setContent] = useState(post.content);
-  const [postMode, setPostMode] = useState(post.postMode);
+  const [content, setContent] = useState('');
+  const [postMode, setPostMode] = useState('public');
   const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const [fileRemove, setFileRemove] = useState<string[]>([]);
-
+  const user = useAppSelector((state: AppState) => state.user.data);
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (upload.length > 0) {
-      const images = upload.map((item) : UploadFile => ({
-        uid: item.public_id,
-        name: item.name || 'image',
-        status: 'done',
-        url: item.url,
-      }));
-      setFileList(images);
-    }
-  }, [upload])
 
   const onChange: UploadProps['onChange'] = ({
     file,
@@ -63,7 +47,7 @@ const ModalEditPost: React.FC<Props> = ({ open, onOk, onCancel, post }) => {
     } else if (file.type && !file.type.includes('image')) {
       openNotification('error', 'Upload Image!', 'Wrong format file!');
     } else {
-        setFileList(newFileList);
+      setFileList(newFileList);
     }
   };
 
@@ -72,70 +56,52 @@ const ModalEditPost: React.FC<Props> = ({ open, onOk, onCancel, post }) => {
   };
 
   const handleCancelPost = () => {
-    setFileRemove([]);
+    setContent('');
+    setFileList([]);
     onCancel();
   };
 
-  const handleRemoveImage = async (file: UploadFile) => {
-    if (file.uid.includes('winter-social-network')) {
-      setFileList((oldFile) => oldFile.filter((item) => item.uid !== file.uid));
-      setFileRemove((oldFile) => [...oldFile, file.uid]);
-    }
-  };
-
-  const handleEditPost = async () => {
+  const handlePost = async () => {
     setLoading(true);
     try {
-      const data = await postApi.updatePost({ id: post.id, content, postMode });
-      dispatch(postActions.updatePostBasicInfo({ postId: data.id, content, postMode }));
-      const fileListAdd = fileList.filter((item) => !item.uid.includes
-      ('winter-social-network'));
-      
-      if (fileListAdd.length > 0) {
+      const data = await postApi.createPost({ content, postMode });
+      if (fileList.length > 0) {
         let formData = new FormData();
-        for (const file of fileListAdd) {
+        for (const file of fileList) {
           formData.append('images', file.originFileObj as Blob);
         }
         const images = await uploadApi.uploadImages(formData);
         for (const image of images) {
           await uploadApi.createUpload({ ...image, postId: data.id });
         }
-        dispatch(postActions.updatePostUpload({postId: data.id, upload: images}))
       }
-      if(fileRemove.length > 0) {
-        for (const id of fileRemove) {
-          dispatch(postActions.deleteUploadPost({ postId: post.id, public_id: id}))
-          await uploadApi.deleteUpload(id);
-        }
-      }
+      const post = await postApi.getPostById(data.id);
+      dispatch(postActions.addPost({ post }));
       setLoading(false);
-      openNotification(
-        'success',
-        'Edit Post Successfully!',
-        ''
-      );
+      openNotification('success', 'Upload Post Successfully!', '');
     } catch (error) {
       setLoading(false);
       const err = error as AxiosError;
       const data: any = err.response?.data;
-      openNotification('error', 'Edit Post Failed!', data.message);
+      openNotification('error', 'Upload Post Failed!', data.message);
     }
     onOk();
-    setFileRemove([]);
+    setContent('');
+    setFileList([]);
+    
   };
-
 
   return (
     <>
       <Modal
-        title='Edit Post'
+        title='Create Post'
         maskClosable={false}
         cancelButtonProps={{ style: { display: 'none' } }}
         okButtonProps={loading ? { style: { display: 'none' } } : {}}
         closeIcon={<AiOutlineCloseCircle size={22} />}
         open={open}
-        okText='Save'
-        onOk={handleEditPost}
+        okText='Post'
+        onOk={handlePost}
         onCancel={handleCancelPost}
         width={'35%'}
         className='ant-modal-header:text-center ant-modal-title:text-2xl ant-modal-footer-btn:w-full ant-modal-footer-btn:m-0 ant-modal-footer-btn:bg-purple-FrenchMauve ant-modal-footer-btn-hover:bg-purple-Purpureus ant-modal-footer-btn:h-10'
@@ -151,7 +117,7 @@ const ModalEditPost: React.FC<Props> = ({ open, onOk, onCancel, post }) => {
               <div className='flex flex-col ml-2'>
                 <span className='font-semibold text-xl'>{`${user.firstName} ${user.lastName}`}</span>
                 <Select
-                  defaultValue={post.postMode}
+                  defaultValue='public'
                   style={{ width: 110, marginTop: 5 }}
                   onSelect={handleChange}
                   optionLabelProp='label'
@@ -238,7 +204,7 @@ const ModalEditPost: React.FC<Props> = ({ open, onOk, onCancel, post }) => {
                   accept='image/*'
                   fileList={fileList}
                   onChange={onChange}
-                  onRemove={handleRemoveImage}
+                  onRemove={(file) => console.log(file.uid)}
                   beforeUpload={() => {
                     return false;
                   }}
@@ -255,4 +221,4 @@ const ModalEditPost: React.FC<Props> = ({ open, onOk, onCancel, post }) => {
   );
 };
 
-export default ModalEditPost;
+export default ModalCreatePost;

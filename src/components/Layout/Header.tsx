@@ -4,11 +4,11 @@ import { IoMdNotifications } from 'react-icons/io';
 import { AiFillMessage, AiOutlineCaretDown, AiOutlineUser } from 'react-icons/ai';
 import { BiLogOut } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
-import { useAppSelector } from '../app/hooks';
-import { AppState } from '../app/store';
-import authApi from '../api/authApi';
+import { useAppSelector } from '../../app/hooks';
+import { AppState } from '../../app/store';
+import authApi from '../../services/api/authApi';
 
-const logo = require('../assets/logo.png');
+const logo = require('../../assets/logo.png');
 
 const { Header } = Layout;
 
@@ -111,7 +111,7 @@ const HeaderComponent = () => {
                 className='mr-1'
                 icon={<AiOutlineUser size={28} />}
                 src={user.avatar?.url}
-                />
+              />
               <span className='text-xl'>{user.lastName}</span>
             </div>
             <Dropdown

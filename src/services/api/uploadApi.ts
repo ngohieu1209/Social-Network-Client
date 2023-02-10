@@ -1,5 +1,5 @@
-import axiosJWT from '../interceptors/axios';
-import { UploadInformation } from '../models/upload';
+import axiosJWT from '../../interceptors/axios';
+import { UploadInformation } from '../../models/upload';
 
 const uploadApi = {
   uploadImage: async (formData: FormData) => {

@@ -1,6 +1,6 @@
-import axiosJWT from '../interceptors/axios';
-import { UpdateUser } from '../models';
-import { PostInformation } from '../models/post';
+import axiosJWT from '../../interceptors/axios';
+import { UpdateUser } from '../../models';
+import { PostInformation } from '../../models/post';
 
 const postApi = {
   createPost: async (post: Partial<PostInformation>) => {

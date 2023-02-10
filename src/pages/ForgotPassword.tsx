@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Form, Input, Typography } from 'antd';
 import { AxiosError } from 'axios';
-import authApi from '../api/authApi';
+import authApi from '../services/api/authApi';
 import { openNotification } from '../utils';
 
 const tailFormItemLayout = {

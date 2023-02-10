@@ -1,7 +1,7 @@
 import { Button, Form, Input, Typography } from 'antd';
 import { AxiosError } from 'axios';
 import { Link } from 'react-router-dom';
-import authApi from '../api/authApi';
+import authApi from '../services/api/authApi';
 import { Signin as SigninDto } from '../models';
 import { openNotification } from '../utils';
 import { useAppDispatch } from '../app/hooks'

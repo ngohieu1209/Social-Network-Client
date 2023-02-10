@@ -2,7 +2,7 @@ import { Button, Checkbox, Form, Input, Typography } from 'antd';
 import { AxiosError } from 'axios';
 import { Link } from 'react-router-dom';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
-import authApi from '../api/authApi';
+import authApi from '../services/api/authApi';
 import { Signup as SignupDto } from '../models';
 import { openNotification } from '../utils'
 

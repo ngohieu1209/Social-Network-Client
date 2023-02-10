@@ -1,7 +1,7 @@
 import { Layout } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import userApi from '../api/userApi';
+import userApi from '../services/api/userApi';
 import { useAppSelector } from '../app/hooks';
 import { AppState } from '../app/store';
 import { FooterComponent, HeaderComponent, Personal, SiderLeft, SiderLeftPersonal } from '../components';

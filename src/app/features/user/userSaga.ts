@@ -1,17 +1,18 @@
 import { UserInformation } from './../../../models/user';
 import { call, put, takeLatest } from 'redux-saga/effects';
-import userApi from '../../../api/userApi';
+import userApi from '../../../services/api/userApi';
 import { userActions } from './userSlice';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { UploadInformation } from '../../../models';
+import { socketService } from '../../../services/socket/socketService';
 
 
 function* getCurrentUserSaga(): any {
   try {
     const userInformation: UserInformation = yield call(userApi.getCurrentUser);
     if (userInformation) {
-      const data = userInformation;
-      yield put(userActions.getUserSuccess({ data }));
+      socketService.connectWithSocketServer(userInformation.id);
+      yield put(userActions.getUserSuccess({ data: userInformation }));
     } else {
       yield put(userActions.getUserFailed());
     }

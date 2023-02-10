@@ -1,5 +1,5 @@
-import axiosJWT from "../interceptors/axios";
-import { SocialLinks, UpdateUser } from "../models";
+import axiosJWT from "../../interceptors/axios";
+import { SocialLinks, UpdateUser } from "../../models";
 
 const userApi = {
   getCurrentUser: async () => {

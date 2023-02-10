@@ -6,7 +6,7 @@ import { FaHashtag } from 'react-icons/fa';
 import { FiLink } from 'react-icons/fi';
 import { useAppSelector } from '../app/hooks';
 import { AppState } from '../app/store';
-import ModalCreatePost from './ModalCreatePost';
+import ModalCreatePost from './Modal/ModalCreatePost';
 
 const CreatePost = () => {
   const user = useAppSelector((state: AppState) => state.user.data);
