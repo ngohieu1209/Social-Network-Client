@@ -58,6 +58,7 @@ const ListFriends = () => {
 
   useEffect(() => {
     if (!mounted.current) {
+      dispatch(friendActions.getFriendReset());
       mounted.current = true;
       return;
     }
