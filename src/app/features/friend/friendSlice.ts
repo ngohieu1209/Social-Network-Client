@@ -45,10 +45,7 @@ export const friendSlice = createSlice({
 
     getFriendsSuccess(state, action: PayloadAction<{ data: Friend[] }>) {
       state.loading = false;
-      state.data.listFriends = [
-        ...state.data.listFriends,
-        ...action.payload.data,
-      ];
+      state.data.listFriends = Array.from(new Set([...state.data.listFriends, ...action.payload.data]));
       state.success = true;
       state.error = false;
     },
@@ -60,8 +57,11 @@ export const friendSlice = createSlice({
     },
 
     getFriendReset(state) {
-      state.data.listRequest = [];
       state.data.listFriends = [];
+    },
+
+    getFriendRequestReset(state) {
+      state.data.listRequest = [];
     },
 
     deleteRequestFriend(state, action: PayloadAction<{ userId: string }>) {

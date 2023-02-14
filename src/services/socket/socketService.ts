@@ -1,5 +1,5 @@
 import io, { Socket } from 'socket.io-client';
-import { AddCommentDto } from '../../models/comment';
+import { AddCommentDto, DeleteCommentDto, EditCommentDto } from '../../models/comment';
 import { ClientToServerEvents, ServerToClientEvents } from '../../models/events';
 
 class SocketService {
@@ -21,9 +21,24 @@ class SocketService {
     this.socket.emit('Comment:NewComment', data);
   }
 
-  updateComment(commentHandler: ServerToClientEvents['onNewComment'] | null) {
-    if(commentHandler)
-      this.socket.on('onNewComment', commentHandler);
+  sendEditComment(data: EditCommentDto) {
+    this.socket.emit('Comment:EditComment', data);
+  }
+
+  sendDeleteComment(data: DeleteCommentDto) {
+    this.socket.emit('Comment:DeleteComment', data);
+  }
+
+  updateComment(commentHandler: ServerToClientEvents['onNewComment']) {
+    this.socket.on('onNewComment', commentHandler);
+  }
+
+  editComment(commentHandler: ServerToClientEvents['onEditComment']) {
+    this.socket.on('onEditComment', commentHandler);
+  }
+
+  deleteComment(commentHandler: ServerToClientEvents['onDeleteComment']) {
+    this.socket.on('onDeleteComment', commentHandler);
   }
 }
 

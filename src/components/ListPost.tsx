@@ -17,7 +17,7 @@ import { openNotification } from '../utils';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import likeApi from '../services/api/likeApi';
-import Comment from './Comment';
+import Comments from './Comments';
 
 const picture_loading_failed = require('../assets/images/picture-loading-failed.png');
 
@@ -253,7 +253,7 @@ const ListPost: React.FC<Props> = ({ post }) => {
         </div>
       </div>
       <div>
-        <Comment postId={post.id} comments={comment && comment.slice().reverse()} count={post.commentsCount} />
+        <Comments postId={post.id} comments={comment && comment.slice().reverse()} count={post.commentsCount} />
       </div>
     </div>
   );

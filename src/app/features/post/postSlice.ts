@@ -114,6 +114,30 @@ export const postSlice = createSlice({
       }, state.data);
     },
 
+    editComment(state, action: PayloadAction<{ id: string, content: string, postId: string }>) {
+      state.data = state.data.reduce((filtered, option) => {
+        if(option.id === action.payload.postId) {
+          option.comment = option.comment.map(comment => {
+            if(comment.id === action.payload.id) {
+              comment.content = action.payload.content;
+            }
+            return comment;
+          });
+        }
+        return filtered;
+      }, state.data);
+    },
+
+    deleteComment(state, action: PayloadAction<{ id: string, postId: string }>) {
+      state.data = state.data.reduce((filtered, option) => {
+        if (option.id === action.payload.postId) {
+          option.comment = option.comment.filter(comment => comment.id !== action.payload.id);
+          option.commentsCount--;
+        }
+        return filtered;
+      }, state.data);
+    },
+
     addCommentsStart(state, action: PayloadAction<{ postId: string;  page: number}>) {
       return state;
     },
