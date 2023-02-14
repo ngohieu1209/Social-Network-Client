@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { postActions } from '../app/features/post/postSlice';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { AppState } from '../app/store';
+import { socketService } from '../services/socket/socketService';
 import CreatePost from './CreatePost';
 import ListPost from './ListPost';
 
@@ -49,6 +50,43 @@ const ContentComponent = () => {
 
   useEffect(() => {
     if (userSuccess) {
+      socketService.updateComment((data: any) => {
+        if (data.ACTION === 'newComment') {
+          dispatch(
+            postActions.addNewComment({
+              postId: data.PAYLOAD.postId,
+              comment: {
+                ...data.PAYLOAD,
+                userId: {
+                  ...data.PAYLOAD.userId,
+                  avatar: { url: data.PAYLOAD.userId.avatar },
+                },
+              },
+            })
+          );
+        }
+      })
+      socketService.editComment((data: any) => {
+        if (data.ACTION === 'editComment') {
+          dispatch(
+            postActions.editComment({
+              postId: data.PAYLOAD.postId,
+              id: data.PAYLOAD.id,
+              content: data.PAYLOAD.content,
+            })
+          )
+        }
+      })
+      socketService.deleteComment((data: any) => {
+        if(data.ACTION === 'deleteComment') {
+          dispatch(
+            postActions.deleteComment({
+              postId: data.PAYLOAD.postId,
+              id: data.PAYLOAD.id,
+            })
+          )
+        }
+      })
       return () => {
         dispatch(postActions.getPostReset())
       }
