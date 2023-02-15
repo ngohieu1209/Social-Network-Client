@@ -167,11 +167,11 @@ const CommentItem: React.FC<Props> = ({ comment }) => {
               <>Press Esc Cancel</>
             ) : (
               <>
-                {moment(comment.createdAt).add(7, 'hours').fromNow()}
+                {moment(comment.createdAt).fromNow()}
                 {comment.updatedAt !== comment.createdAt && (
                   <span className='text-xs italic ml-2 mt-1'>
                     Edited:{' '}
-                    {moment(comment.updatedAt).add(7, 'hours').calendar()}
+                    {moment(comment.updatedAt).calendar()}
                   </span>
                 )}
               </>

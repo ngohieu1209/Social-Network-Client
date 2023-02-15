@@ -10,6 +10,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Personal from "./Personal";
 import SiderLeftPersonal from "./Layout/SiderLeftPersonal";
 import ListFriends from "./ListFriends";
+import Notification from "./Notification";
 
 export {
   Loading,
@@ -24,4 +25,5 @@ export {
   Personal,
   SiderLeftPersonal,
   ListFriends,
+  Notification,
 };
