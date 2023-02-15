@@ -175,11 +175,11 @@ const ListPost: React.FC<Props> = ({ post }) => {
           >{`${user.firstName} ${user.lastName}`}</span>
           <span className='text-gray-400 text-sm flex items-center'>
             <IconMode />
-            {moment(post.createdAt).add(7, 'hours').fromNow()}
+            {moment(post.createdAt).fromNow()}
             {/* {post.updatedAt !== post.createdAt && (
               <span className='text-xs italic ml-2 mt-1'>
                 Đã chỉnh sửa:{' '}
-                {moment(post.updatedAt).add(7, 'hours').calendar()}
+                {moment(post.updatedAt).calendar()}
               </span>
             )} */}
           </span>
