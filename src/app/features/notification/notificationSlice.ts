@@ -35,6 +35,23 @@ export const notificationSlice = createSlice({
       state.success = false;
       state.error = true;
     },
+    resetNotification(state) {
+      state.loading = false;
+      state.data = [];
+      state.success = false;
+      state.error = false;
+    },
+    addNewNotification(state, action: PayloadAction<{ data: INotification }>) {
+      state.data = [action.payload.data, ...state.data];
+    },
+    seenNotification(state, action: PayloadAction<{ id: string }>) {
+      state.data = state.data.map((notification) => {
+        if (notification.id === action.payload.id) {
+          notification.seen = 1;
+        }
+        return notification;
+      });
+    }
   },
 });
 

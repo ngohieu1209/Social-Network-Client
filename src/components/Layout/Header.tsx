@@ -5,11 +5,10 @@ import {
   Dropdown,
   Layout,
   MenuProps,
-  Select,
   Space,
 } from 'antd';
 import Notification from '../Notification';
-import { FaSearch, FaHome, FaUserFriends } from 'react-icons/fa';
+import { FaHome, FaUserFriends } from 'react-icons/fa';
 import { IoMdNotifications } from 'react-icons/io';
 import { AiOutlineCaretDown, AiOutlineUser } from 'react-icons/ai';
 import { BiLogOut, BiMessage } from 'react-icons/bi';
@@ -18,6 +17,7 @@ import { useAppSelector } from '../../app/hooks';
 import { AppState } from '../../app/store';
 import authApi from '../../services/api/authApi';
 import { useState } from 'react';
+import SearchUsers from '../SearchUsers';
 
 const logo = require('../../assets/logo.png');
 
@@ -40,8 +40,9 @@ const items: MenuProps['items'] = [
 
 const HeaderComponent = () => {
   const [openNotification, setOpenNotification] = useState(false);
-
   const user = useAppSelector((state: AppState) => state.user.data);
+  const notification = useAppSelector((state: AppState) => state.notification.data);
+  const countNotification = notification.filter((item) => item.seen === 0).length;
   const navigate = useNavigate();
 
   return (
@@ -64,30 +65,7 @@ const HeaderComponent = () => {
               className='w-56 h-16 mt-[5px] cursor-pointer'
               onClick={() => navigate('/')}
             />
-            <Select
-              showSearch
-              value={null}
-              className='w-1/2'
-              placeholder='Search'
-              optionFilterProp='children'
-              onChange={(value) => console.log(value)}
-              suffixIcon={<FaSearch />}
-              onSearch={(value) => console.log(value)}
-              filterOption={(input, option) =>
-                (option?.label ?? '').includes(input)
-              }
-              filterSort={(optionA, optionB) =>
-                (optionA?.label ?? '')
-                  .toLowerCase()
-                  .localeCompare((optionB?.label ?? '').toLowerCase())
-              }
-              options={[
-                {
-                  value: '1',
-                  label: 'Not Identified',
-                },
-              ]}
-            />
+            <SearchUsers />
           </div>
           <div className='flex justify-between w-1/2'>
             <div className='flex justify-between w-1/3'>
@@ -106,9 +84,9 @@ const HeaderComponent = () => {
                 <span className='text-xl'>Friends</span>
               </div>
             </div>
-            <div className='flex justify-between w-1/3'>
+            <div className='flex justify-evenly w-1/3'>
               <div className='flex items-center font-bold'>
-                <Badge count={9}>
+                <Badge count={countNotification}>
                   <Avatar
                     shape='circle'
                     icon={
@@ -123,7 +101,7 @@ const HeaderComponent = () => {
                   />
                 </Badge>
               </div>
-              <div className='flex items-center font-bold cursor-pointer'>
+              {/* <div className='flex items-center font-bold cursor-pointer'>
                 <Badge count={9}>
                   <Avatar
                     shape='circle'
@@ -137,7 +115,7 @@ const HeaderComponent = () => {
                     className='bg-[#E0E0E0] hover:bg-[#C2C2C2] cursor-pointer'
                   />
                 </Badge>
-              </div>
+              </div> */}
               <div className='flex items-center font-bold'>
                 <div
                   className='flex items-center cursor-pointer'
