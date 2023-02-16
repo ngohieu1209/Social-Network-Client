@@ -199,7 +199,7 @@ const ModalEditUser: React.FC<Props> = ({ open, onCancel }) => {
         onCancel={handleCancelEdit}
         width={'35%'}
         style={{ top: 20 }}
-        className='ant-modal-header:text-center ant-modal-title:text-2xl ant-modal-footer-btn:w-full ant-modal-footer-btn:m-0 ant-modal-footer-btn:bg-purple-FrenchMauve ant-modal-footer-btn-hover:bg-purple-Purpureus ant-modal-footer-btn:h-10'
+        className='custom-modal'
       >
         <div>
           <div className='items-center flex-row pt-2 grid grid-cols-8'>

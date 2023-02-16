@@ -118,7 +118,7 @@ const ModalFriendRequest: React.FC<Props> = ({ open, onCancel }) => {
         open={open}
         onCancel={handleCancelModal}
         width={'25%'}
-        className='ant-modal-header:text-center ant-modal-title:text-2xl ant-modal-footer-btn:w-full ant-modal-footer-btn:m-0 ant-modal-footer-btn:bg-purple-FrenchMauve ant-modal-footer-btn-hover:bg-purple-Purpureus ant-modal-footer-btn:h-10'
+        className='custom-modal'
       >
         <div
           className='h-[60vh] overflow-auto'

@@ -65,11 +65,27 @@ body {
   border-radius: 6px;
 }
 
-.delete-confirm .ant-modal-confirm-body {
-  /* flex-direction: column; */
-}
-
 .delete-confirm .ant-modal-confirm-body span.ant-modal-confirm-title {
   flex-basis: auto;
   font-size: large;
+}
+
+.custom-modal .ant-modal-header {
+  text-align: center;
+}
+
+.custom-modal .ant-modal-title {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.custom-modal .ant-modal-footer button {
+  width: 100%;
+  height: 2.5rem;
+  margin: 0 !important;
+  background-color: #C47BCC;
+}
+
+.custom-modal .ant-modal-footer button:hover {
+  background-color: #A545B0;
 }

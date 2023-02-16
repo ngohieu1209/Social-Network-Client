@@ -138,7 +138,7 @@ const ModalEditPost: React.FC<Props> = ({ open, onOk, onCancel, post }) => {
         onOk={handleEditPost}
         onCancel={handleCancelPost}
         width={'35%'}
-        className='ant-modal-header:text-center ant-modal-title:text-2xl ant-modal-footer-btn:w-full ant-modal-footer-btn:m-0 ant-modal-footer-btn:bg-purple-FrenchMauve ant-modal-footer-btn-hover:bg-purple-Purpureus ant-modal-footer-btn:h-10'
+        className='custom-modal'
       >
         <Spin spinning={loading} size='large'>
           <div>
