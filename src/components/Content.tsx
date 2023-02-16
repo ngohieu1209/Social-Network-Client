@@ -4,6 +4,7 @@ import { postActions } from '../app/features/post/postSlice';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { AppState } from '../app/store';
 import { socketService } from '../services/socket/socketService';
+import { openNotification } from '../utils';
 import CreatePost from './CreatePost';
 import ListPost from './ListPost';
 
@@ -64,6 +65,8 @@ const ContentComponent = () => {
               },
             })
           );
+        } else if (data.ACTION === 'POST_DELETED') {
+          openNotification('error', 'Post deleted', data.PAYLOAD);
         }
       })
       socketService.editComment((data: any) => {

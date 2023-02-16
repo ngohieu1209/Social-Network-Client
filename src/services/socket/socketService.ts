@@ -29,6 +29,10 @@ class SocketService {
     this.socket.emit('Comment:DeleteComment', data);
   }
 
+  sendSeenNotification(id: string) {
+    this.socket.emit('Notification:SeenNotification', id);
+  }
+
   updateComment(commentHandler: ServerToClientEvents['onNewComment']) {
     this.socket.on('onNewComment', commentHandler);
   }
@@ -39,6 +43,14 @@ class SocketService {
 
   deleteComment(commentHandler: ServerToClientEvents['onDeleteComment']) {
     this.socket.on('onDeleteComment', commentHandler);
+  }
+
+  updateNotification(notificationHandler: ServerToClientEvents['onNewNotification']) {
+    this.socket.on('onNewNotification', notificationHandler);
+  }
+
+  seenNotification(notificationHandler: ServerToClientEvents['onSeenNotification']) {
+    this.socket.on('onSeenNotification', notificationHandler);
   }
 }
 

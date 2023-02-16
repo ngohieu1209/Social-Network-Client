@@ -33,6 +33,14 @@ const userApi = {
     } catch (error) {
       console.log(error)
     }
+  },
+  getUsersByName: async (name: string) => {
+    try {
+      const { data } = await axiosJWT.get(`/user/search?name=${name}`);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 
