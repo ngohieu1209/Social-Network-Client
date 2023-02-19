@@ -46,11 +46,12 @@ const CommentItem: React.FC<Props> = ({ comment }) => {
 
   const handleDeleteComment = async () => {
     try {
-      socketService.sendDeleteComment({id: comment.id, postId: comment.postId});
+      socketService.sendDeleteComment({ id: comment.id, postId: comment.postId });
+      openNotification('success', 'Delete Comment Successfully!', '');
     } catch (error) {
       const err = error as AxiosError;
       const data: any = err.response?.data;
-      openNotification('error', 'Delete Post Failed!', data.message);
+      openNotification('error', 'Delete Comment Failed!', data.message);
     }
   };
 

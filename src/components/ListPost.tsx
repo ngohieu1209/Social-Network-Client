@@ -206,7 +206,7 @@ const ListPost: React.FC<Props> = ({ post }) => {
       />
 
       <div className='mx-5 my-3 text-left text-base'>
-        <span>{post.content}</span>
+        <span className='mx-3'>{post.content}</span>
       </div>
       <div className='ml-5 mr-5'>
         <Image.PreviewGroup>

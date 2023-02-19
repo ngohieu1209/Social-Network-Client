@@ -7,8 +7,12 @@ const authApi = {
   },
 
   signIn: async (signIn: Signin) => {
-    const { data } = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/v1/auth/signin`, signIn, { withCredentials: true });
-    return data;
+    try {
+      const { data } = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/v1/auth/signin`, signIn, { withCredentials: true });
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
   },
 
   activationEmail: async (activationToken: string) => {

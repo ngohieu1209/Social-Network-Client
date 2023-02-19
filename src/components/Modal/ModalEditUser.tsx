@@ -183,7 +183,7 @@ const ModalEditUser: React.FC<Props> = ({ open, onCancel }) => {
       setLoading(false);
       const err = error as AxiosError;
       const data: any = err.response?.data;
-      openNotification('error', 'Upload Post Failed!', data.message);
+      openNotification('error', 'Update Link Failed!', data.message);
     }
     setIsEdit({ field: '', edit: false });
   };

@@ -1,16 +1,44 @@
 import io, { Socket } from 'socket.io-client';
-import { AddCommentDto, DeleteCommentDto, EditCommentDto } from '../../models/comment';
-import { ClientToServerEvents, ServerToClientEvents } from '../../models/events';
+import {
+  AddCommentDto,
+  DeleteCommentDto,
+  EditCommentDto,
+} from '../../models/comment';
+import {
+  ClientToServerEvents,
+  onDataToServer,
+  ServerToClientEvents,
+} from '../../models/events';
+import { CommentHandler, NotificationHandler } from './handler';
 
 class SocketService {
   private readonly socket: Socket<ServerToClientEvents, ClientToServerEvents> =
     io('http://localhost:5000', {
       autoConnect: false,
     });
-  
   connectWithSocketServer(userId: string) {
     this.socket.auth = { id: userId };
     this.socket.connect();
+
+    this.socket.on('onNewComment', (data: onDataToServer<any>) => {
+      CommentHandler.updateComment(data);
+    });
+
+    this.socket.on('onEditComment', (data: onDataToServer<any>) => {
+      CommentHandler.editComment(data);
+    });
+    this.socket.on('onDeleteComment', (data: onDataToServer<any>) => {
+      CommentHandler.deleteComment(data);
+    });
+    this.socket.on('onNewNotification', (data: onDataToServer<any>) => {
+      NotificationHandler.updateNotification(data);
+    });
+    this.socket.on('onSeenNotification', (data: onDataToServer<any>) => {
+      NotificationHandler.seenNotification(data);
+    });
+    this.socket.on('onPostNotFound', (data: onDataToServer<any>) => {
+      CommentHandler.postNotFound(data);
+    });
   }
 
   disconnect() {
@@ -33,24 +61,8 @@ class SocketService {
     this.socket.emit('Notification:SeenNotification', id);
   }
 
-  updateComment(commentHandler: ServerToClientEvents['onNewComment']) {
-    this.socket.on('onNewComment', commentHandler);
-  }
-
-  editComment(commentHandler: ServerToClientEvents['onEditComment']) {
-    this.socket.on('onEditComment', commentHandler);
-  }
-
-  deleteComment(commentHandler: ServerToClientEvents['onDeleteComment']) {
-    this.socket.on('onDeleteComment', commentHandler);
-  }
-
-  updateNotification(notificationHandler: ServerToClientEvents['onNewNotification']) {
-    this.socket.on('onNewNotification', notificationHandler);
-  }
-
-  seenNotification(notificationHandler: ServerToClientEvents['onSeenNotification']) {
-    this.socket.on('onSeenNotification', notificationHandler);
+  postNotFound(notificationHandler: ServerToClientEvents['onPostNotFound']) {
+    this.socket.on('onPostNotFound', notificationHandler);
   }
 }
 
