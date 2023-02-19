@@ -7,6 +7,7 @@ import { Friend } from '../../models';
 import ModalFriendRequest from '../Modal/ModalFriendRequest';
 import { useAppDispatch } from '../../app/hooks';
 import { friendActions } from '../../app/features/friend/friendSlice';
+import { openNotification } from '../../utils';
 
 const { Sider } = Layout;
 
@@ -37,8 +38,8 @@ const SiderRight = () => {
 
   const handleAccept = async (userId: string) => {
     try {
-      const data = await friendApi.acceptFriend(userId);
-      console.log(data);
+      await friendApi.acceptFriend(userId);
+      openNotification('success', 'Friend', 'Accept friend successfully!');
       const newFriend = requestFriends.find(
         (item) => item.user_send_request.id === userId 
       );
@@ -49,19 +50,19 @@ const SiderRight = () => {
         );
       }
     } catch (error) {
-      console.log(error);
+      openNotification('error', 'Friend', 'Accept friend failed!');
     }
   };
 
   const handleDelete = async (userId: string) => {
     try {
-      const data = await friendApi.deleteFriend(userId);
-      console.log(data);
+      await friendApi.deleteFriend(userId);
+      openNotification('success', 'Friend', 'Friend request declined!');
       setRequestFriends((prev) =>
         prev.filter((item) => item.user_send_request.id !== userId)
       );
     } catch (error) {
-      console.log(error);
+      openNotification('error', 'Friend', 'Delete friend failed!');
     }
   };
 

@@ -13,14 +13,6 @@ import { UserInformation } from '../../models';
 
 const { Sider } = Layout;
 
-const getUsername = (url: string | null) => {
-  if (url === null) return '';
-  const regexUrl = url.match(/\/(\w+)/g);
-  if (regexUrl === null) return '';
-  const username = regexUrl[regexUrl.length - 1].substring(1);
-  return username;
-};
-
 type Props = {
   user: UserInformation | null;
 };
@@ -181,3 +173,11 @@ const SiderLeftPersonal: React.FC<Props> = ({ user }) => {
 };
 
 export default SiderLeftPersonal;
+
+const getUsername = (url: string | null) => {
+  if (url === null) return '';
+  const regexUrl = url.match(/\/(\w+)/g);
+  if (regexUrl === null) return '';
+  const username = regexUrl[regexUrl.length - 1].substring(1);
+  return username;
+};

@@ -6,6 +6,7 @@ export interface ServerToClientEvents {
   "onDeleteComment": (data: any) => void;
   "onNewNotification": (data: any) => void;
   "onSeenNotification": (data: any) => void;
+  "onPostNotFound": (data: any) => void;
 }
 
 export interface ClientToServerEvents {
@@ -13,4 +14,9 @@ export interface ClientToServerEvents {
   'Comment:EditComment': (data: EditCommentDto) => void;
   'Comment:DeleteComment': (data: DeleteCommentDto) => void;
   'Notification:SeenNotification': (id: string) => void;
+}
+
+export type onDataToServer<T> = {
+  ACTION: string;
+  PAYLOAD: T;
 }
