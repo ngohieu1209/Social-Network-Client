@@ -1,31 +1,44 @@
-// import axios, { AxiosRequestConfig } from 'axios';
-// import Cookies from 'js-cookie';
+import axios, { AxiosRequestConfig } from 'axios';
 
-// const axiosJWT = axios.create({
-//   baseURL: `${process.env.REACT_APP_SERVER_URL}/nth/api/v1`,
-//   withCredentials: true,
-// });
+const axiosJWT = axios.create({
+  baseURL: `${process.env.REACT_APP_SERVER_URL}/api/v1`,
+  withCredentials: true,
+});
 
-// axiosJWT.interceptors.request.use(
-//   async (config: AxiosRequestConfig) => {
-//     const firstLogin =
-//       localStorage.getItem('firstLogin') ||
-//       sessionStorage.getItem('firstLogin');
-//     const refreshToken = Cookies.get('refreshToken');
-//     if (firstLogin && refreshToken) {
-//       const res = await axios.post(
-//         `${process.env.REACT_APP_SERVER_URL}/nth/api/v1/auth/refreshToken`,
-//         { refreshToken },
-//         { withCredentials: true }
-//       );
+axiosJWT.interceptors.request.use(
+  async (config: AxiosRequestConfig) => {
+    const isLogged = localStorage.getItem('firstLogin');
+    if (isLogged) {
+      const { data } = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/v1/auth/refreshToken`, null, { withCredentials: true });
+      if (data) {
+        config.headers!.Authorization = `Bearer ${data.accessToken}`;
+      }
+    }
+    return config;
+  },
+  (err) => Promise.reject(err)
+);
 
-//       if (res.status === 200) {
-//         config.headers!.Authorization = `Bearer ${res.data.accessToken}`;
-//       }
-//     }
-//     return config;
-//   },
-//   (err) => Promise.reject(err)
-// );
+axiosJWT.interceptors.response.use(
+  (res) => res,
+  async (err) => {
+    if (!('response' in err) || err.response.status === 401) {
+      localStorage.removeItem('firstLogin');
+    } 
 
-// export default axiosJWT;
+    const originalRequest = err.config;
+    if (err.response.status === 400 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const { data } = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/v1/auth/refreshToken`, null, { withCredentials: true });
+      if (data) {
+        axiosJWT.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
+        return axiosJWT(originalRequest);
+      }
+    }
+    
+    
+    return Promise.reject(err);
+  }
+);
+
+export default axiosJWT;

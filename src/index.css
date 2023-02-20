@@ -2,11 +2,90 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Cabin */
 @import url('https://fonts.googleapis.com/css2?family=Cabin&family=Roboto+Condensed:wght@400;700&display=swap');
+/* ----- */
+
+/* Acme    */
+@import url('https://fonts.googleapis.com/css2?family=Acme&display=swap');
+/* ------- */
+
+* {
+  font-family: 'Cabin', sans-serif;
+  box-sizing: border-box;
+}
 
 body {
-  font-family: 'Cabin', sans-serif;
+  margin: 0;
   font-weight: 400;
   line-height: 1.75;
   color: '#F1F1F1';
+}
+
+.custom-meta-component .ant-card-meta-description {
+  color: #000000;
+}
+
+.ant-image-preview-img {
+  display: unset !important;
+}
+
+.label-form input {
+  font-family: 'Cabin', sans-serif;
+}
+
+.share-input .ant-select-selector {
+  border-radius: 20px !important;
+  background-color: #F4F4F5 !important;
+}
+
+.share-input .ant-select-selector:hover {
+  background-color: #DFDFE2 !important;
+  border-color: #DFDFE2 !important;
+}
+
+.share-input .ant-select-selector:focus-within {
+  border-color: #DFDFE2 !important;
+}
+
+.instagram {
+  background: radial-gradient(
+    circle at 30% 107%,
+    #fdf497 0%,
+    #fdf497 5%,
+    #fd5949 45%,
+    #d6249f 60%,
+    #285aeb 90%
+  );
+  border-radius: 10px;
+}
+
+.facebook {
+  background: linear-gradient(to bottom, #3a5795 0%, #2b4886 100%);
+  border-radius: 6px;
+}
+
+.delete-confirm .ant-modal-confirm-body span.ant-modal-confirm-title {
+  flex-basis: auto;
+  font-size: large;
+}
+
+.custom-modal .ant-modal-header {
+  text-align: center;
+}
+
+.custom-modal .ant-modal-title {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.custom-modal .ant-modal-footer button {
+  width: 100%;
+  height: 2.5rem;
+  margin: 0 !important;
+  background-color: #C47BCC;
+}
+
+.custom-modal .ant-modal-footer button:hover {
+  background-color: #A545B0;
 }
