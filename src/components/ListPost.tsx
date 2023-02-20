@@ -133,7 +133,7 @@ const ListPost: React.FC<Props> = ({ post }) => {
         }
       }
     } catch (error) {
-      console.log(error);
+      openNotification('error', 'Like Post Failed!', 'Content Not Available Anymore');
     }
   }
   useEffect(() => {
@@ -154,7 +154,7 @@ const ListPost: React.FC<Props> = ({ post }) => {
         setIsLike(true);
       }
     } catch (error) {
-      console.log(error);
+      openNotification('error', 'Like Post Failed!', 'Content Not Available Anymore');
     }
   }
 
