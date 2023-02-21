@@ -152,7 +152,16 @@ export const postSlice = createSlice({
         }
         return filtered;
       }, state.data);
-    }
+    },
+
+    resetComments(state, action: PayloadAction<{ postId: string }>) {
+      state.data = state.data.reduce((filtered, option) => {
+        if (option.id === action.payload.postId) {
+          option.comment = [];
+        }
+        return filtered;
+      }, state.data);
+    },
   },
 });
 
