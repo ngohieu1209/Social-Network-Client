@@ -146,13 +146,22 @@ export const postSlice = createSlice({
       state.data = state.data.reduce((filtered, option) => {
         if (option.id === action.payload.postId) {
           if(option.hasOwnProperty('comment'))
-            option.comment = [...option.comment, ...action.payload.comments];
+            option.comment = Array.from(new Set([...option.comment, ...action.payload.comments]));
           else 
-            option.comment = [...action.payload.comments];
+            option.comment = Array.from(new Set([...action.payload.comments]));
         }
         return filtered;
       }, state.data);
-    }
+    },
+
+    resetComments(state, action: PayloadAction<{ postId: string }>) {
+      state.data = state.data.reduce((filtered, option) => {
+        if (option.id === action.payload.postId) {
+          option.comment = [];
+        }
+        return filtered;
+      }, state.data);
+    },
   },
 });
 
