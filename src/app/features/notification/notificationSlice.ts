@@ -27,7 +27,7 @@ export const notificationSlice = createSlice({
       action: PayloadAction<{ data: INotification[] }>
     ) {
       state.loading = false;
-      state.data = [...state.data, ...action.payload.data];
+      state.data = Array.from(new Set([...state.data, ...action.payload.data]));
       state.success = true;
     },
     getNotificationsFailed(state) {
@@ -42,7 +42,7 @@ export const notificationSlice = createSlice({
       state.error = false;
     },
     addNewNotification(state, action: PayloadAction<{ data: INotification }>) {
-      state.data = [action.payload.data, ...state.data];
+      state.data = Array.from(new Set([action.payload.data, ...state.data]));
     },
     seenNotification(state, action: PayloadAction<{ id: string }>) {
       state.data = state.data.map((notification) => {
